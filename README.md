@@ -1,3 +1,3 @@
 # scalpsetter
 
-Stop losing all your money
+Lose all your money, but slower
