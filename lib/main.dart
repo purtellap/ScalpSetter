@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:scalpsetter/pages/account.dart';
+import 'package:scalpsetter/pages/edit_account.dart';
 import 'package:scalpsetter/pages/home.dart';
 import 'package:scalpsetter/pages/loading.dart';
 import 'package:scalpsetter/res/colors.dart';
+
+import 'account.dart';
 
 void main() {
   runApp(ScalpSetter());
@@ -11,14 +13,16 @@ void main() {
 
 class ScalpSetter extends StatelessWidget {
 
+  static List<Account> accounts = [];
+
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: (){
-        // hide keyboard when tapping out
-        SystemChannels.textInput.invokeMethod('TextInput.hide');
-      },
-      child: MaterialApp(
+    // return GestureDetector(
+    //   onTap: (){
+    //     // hide keyboard when tapping out
+    //     SystemChannels.textInput.invokeMethod('TextInput.hide');
+    //   },
+      return MaterialApp(
         theme: ThemeData(
           brightness: Brightness.dark,
           primaryColor: ThemeColors.accentColor,
@@ -33,9 +37,8 @@ class ScalpSetter extends StatelessWidget {
         routes: {
           '/': (context) => Loading(),
           '/home': (context) => Home(),
-          '/account': (context) => Account(),
+          '/account': (context) => AccountPage(),
         },
-      ),
     );
   }
 }

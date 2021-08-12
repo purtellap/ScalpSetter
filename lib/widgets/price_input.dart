@@ -4,6 +4,11 @@ import 'package:intl/intl.dart';
 import 'package:scalpsetter/res/colors.dart';
 
 class PriceInput extends StatefulWidget {
+
+  final Color underlineColor;
+
+  PriceInput({this.underlineColor});
+
   @override
   _PriceInputState createState() => _PriceInputState();
 }
@@ -44,7 +49,7 @@ class _PriceInputState extends State<PriceInput> {
                 ],
                 decoration: InputDecoration(
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: ThemeColors.longColor),
+                    borderSide: BorderSide(color: widget.underlineColor),
                   ),
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: ThemeColors.underlineColor),
@@ -65,7 +70,7 @@ class _PriceInputState extends State<PriceInput> {
             ),
             IconButton(
               icon: Icon(Icons.copy_rounded),
-              color: ThemeColors.accentColor,
+              color: ThemeColors.secondaryTextColor,
               onPressed: (){
                 Clipboard.setData(ClipboardData(text: entryText));
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(

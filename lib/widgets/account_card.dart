@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:scalpsetter/main.dart';
 import 'package:scalpsetter/res/colors.dart';
 
+import '../account.dart';
+
 class HomeAccountCard extends StatelessWidget {
+
+  Account account;
+  HomeAccountCard(this.account);
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +28,14 @@ class HomeAccountCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Account 1', style: TextStyle(
+                  Text(account.name, style: TextStyle(
                     color: ThemeColors.secondaryTextColor,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1,
                     fontSize: 20,
                     ),
                   ),
-                  Text('0.025/0.075', style: TextStyle(
+                  Text('${account.makerFee}/${account.takerFee}', style: TextStyle(
                     color: ThemeColors.textColor,
                     letterSpacing: 1,
                     fontSize: 14,
@@ -42,14 +47,14 @@ class HomeAccountCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('25x', style: TextStyle(
+                  Text('${account.leverage}x', style: TextStyle(
                     color: ThemeColors.textColor,
                     //fontWeight: FontWeight.bold,
                     letterSpacing: 1,
                     fontSize: 16,
                     ),
                   ),
-                  Text('1%', style: TextStyle(
+                  Text('${account.riskAmt * 100}%', style: TextStyle(
                     color: ThemeColors.textColor,
                     letterSpacing: 1,
                     fontSize: 14,
