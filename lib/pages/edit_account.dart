@@ -11,16 +11,11 @@ import '../account.dart';
 
 class AccountPage extends StatefulWidget {
 
-  //Account account;
-  //AccountPage(this.account);
-
   @override
   _AccountPageState createState() => _AccountPageState();
 }
 
 class _AccountPageState extends State<AccountPage> {
-
-  String accountName = 'Account 1';
 
   @override
   void initState() {
@@ -29,9 +24,15 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    Account account;
+    final arguments = ModalRoute.of(context).settings.arguments as Map;
+    if (arguments != null) account = arguments['account'];
+
     return GestureDetector(
       onTap: (){
-        SystemChannels.textInput.invokeMethod('TextInput.hide');
+        FocusManager.instance.primaryFocus?.unfocus();
+        //SystemChannels.textInput.invokeMethod('TextInput.hide');
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -39,9 +40,9 @@ class _AccountPageState extends State<AccountPage> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           iconTheme: IconThemeData(
-            color: ThemeColors.accentColor, //change your color here
+            color: ThemeColors.accentColor,
           ),
-          title: Text('$accountName', style: TextStyle(
+          title: Text(account.name, style: TextStyle(
             color: ThemeColors.textColor,
           ),),
           centerTitle: true,
@@ -81,8 +82,8 @@ class _AccountPageState extends State<AccountPage> {
                       ),
                       Row(
                         children: [
-                          Flexible(child: RiskInput()),
-                          Flexible(child: LeverageInput()),
+                          Flexible(child: RiskInput(account.riskAmt.toString())),
+                          Flexible(child: LeverageInput(account.leverage.toString())),
                         ],
                       ),
                       SizedBox(height: 24,),
@@ -94,8 +95,8 @@ class _AccountPageState extends State<AccountPage> {
                       ),
                       Row(
                         children: [
-                          Flexible(child: FeeInput()),
-                          Flexible(child: FeeInput()),
+                          Flexible(child: FeeInput(account.makerFee.toString())),
+                          Flexible(child: FeeInput(account.takerFee.toString())),
                         ],
                       ),
                     ],
@@ -109,7 +110,8 @@ class _AccountPageState extends State<AccountPage> {
               color: ThemeColors.overlayColor,
               child: InkWell(
               onTap: (){
-                Navigator.pushNamed(context, '/account');
+                // TODO: make new account here
+                Navigator.pushReplacementNamed(context, '/account', arguments: {'account' : account});
               },
               child: Padding(
                 padding: const EdgeInsets.all(16),

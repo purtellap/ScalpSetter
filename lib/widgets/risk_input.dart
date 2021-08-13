@@ -5,6 +5,10 @@ import 'package:scalpsetter/res/colors.dart';
 
 
 class RiskInput extends StatefulWidget {
+
+  final String input;
+  RiskInput(this.input);
+
   @override
   _RiskInputState createState() => _RiskInputState();
 }
@@ -34,7 +38,8 @@ class _RiskInputState extends State<RiskInput> {
         Row(
           children: [
             Flexible(
-              child: TextField(
+              child: TextFormField(
+                initialValue: widget.input,
                 autocorrect: false,
                 enableSuggestions: false,
                 keyboardType: TextInputType.numberWithOptions(decimal: true, signed: false),
@@ -56,7 +61,7 @@ class _RiskInputState extends State<RiskInput> {
                   fontSize: 24,
                   letterSpacing: 2,
                 ),
-                onChanged: (String value) async {
+                onChanged: (String value) {
                   setState(() {
                     entryText = value;
                   });

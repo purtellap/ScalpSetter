@@ -33,6 +33,54 @@ class _HomeState extends State<Home> {
       ),
       child: Scaffold(
         backgroundColor: ThemeColors.mainBkgColor,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+            child: IconButton(
+              icon: Icon(
+                Icons.home_rounded,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                // do something
+              },
+            ),
+          ),
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.nightlight_round,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                // do something
+              },
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.favorite_rounded,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                // do something
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0,0,16,0),
+              child: IconButton(
+                icon: Icon(
+                  Icons.settings_rounded,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  // do something
+                },
+              ),
+            ),
+          ],
+        ),
         body: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

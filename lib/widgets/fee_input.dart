@@ -4,6 +4,10 @@ import 'package:intl/intl.dart';
 import 'package:scalpsetter/res/colors.dart';
 
 class FeeInput extends StatefulWidget {
+
+  final String input;
+  FeeInput(this.input);
+
   @override
   _FeeInputState createState() => _FeeInputState();
 }
@@ -33,7 +37,8 @@ class _FeeInputState extends State<FeeInput> {
         Row(
           children: [
             Flexible(
-              child: TextField(
+              child: TextFormField(
+                initialValue: widget.input,
                 autocorrect: false,
                 enableSuggestions: false,
                 keyboardType: TextInputType.numberWithOptions(decimal: true, signed: false),
@@ -55,7 +60,7 @@ class _FeeInputState extends State<FeeInput> {
                   fontSize: 24,
                   letterSpacing: 2,
                 ),
-                onChanged: (String value) async {
+                onChanged: (String value) {
                   setState(() {
                     entryText = value;
                   });

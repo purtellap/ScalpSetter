@@ -6,8 +6,10 @@ import 'package:scalpsetter/res/colors.dart';
 class PriceInput extends StatefulWidget {
 
   final Color underlineColor;
+  final Function(String) onChange;
+  final String entryText;
 
-  PriceInput({this.underlineColor});
+  PriceInput({this.underlineColor, this.onChange, this.entryText});
 
   @override
   _PriceInputState createState() => _PriceInputState();
@@ -15,8 +17,12 @@ class PriceInput extends StatefulWidget {
 
 class _PriceInputState extends State<PriceInput> {
 
-  String entryText = '';
   bool inputError = false;
+  final nameHolder = TextEditingController();
+
+  clearTextInput(){
+    nameHolder.clear();
+  }
 
   // nicely formatted price in text below text field
   String formattedPrice(String price){
@@ -60,19 +66,29 @@ class _PriceInputState extends State<PriceInput> {
                   fontSize: 24,
                   letterSpacing: 2,
                 ),
-                onChanged: (String value) async {
-                  setState(() {
-                    entryText = value;
-                  });
-                  return;
-                },
+                onChanged: widget.onChange,
+                controller: nameHolder,
+                // onChanged: (String value) async {
+                //   widget.onChange;
+                //   setState(() {
+                //     entryText = value;
+                //   });
+                //   return;
+                // },
               ),
+            ),
+            IconButton(
+              icon: Icon(Icons.clear_rounded),
+              color: ThemeColors.secondaryTextColor,
+              onPressed: (){
+                clearTextInput();
+              },
             ),
             IconButton(
               icon: Icon(Icons.copy_rounded),
               color: ThemeColors.secondaryTextColor,
               onPressed: (){
-                Clipboard.setData(ClipboardData(text: entryText));
+                Clipboard.setData(ClipboardData(text: widget.entryText));
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: const Text('Copied to clipboard', style: TextStyle(
                     color: Colors.grey,
@@ -90,7 +106,7 @@ class _PriceInputState extends State<PriceInput> {
         ),
         Padding(
           padding: EdgeInsets.only(top:8),
-          child: Text(formattedPrice(entryText),
+          child: Text(formattedPrice(widget.entryText),
             style: TextStyle(color: inputError ? ThemeColors.errorColor : ThemeColors.textColor),
           ),
         ),

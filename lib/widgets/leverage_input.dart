@@ -4,6 +4,10 @@ import 'package:intl/intl.dart';
 import 'package:scalpsetter/res/colors.dart';
 
 class LeverageInput extends StatefulWidget {
+
+  final String input;
+  LeverageInput(this.input);
+
   @override
   _LeverageInputState createState() => _LeverageInputState();
 }
@@ -33,7 +37,8 @@ class _LeverageInputState extends State<LeverageInput> {
         Row(
           children: [
             Flexible(
-              child: TextField(
+              child: TextFormField(
+                initialValue: widget.input,
                 autocorrect: false,
                 enableSuggestions: false,
                 keyboardType: TextInputType.number,
@@ -56,7 +61,7 @@ class _LeverageInputState extends State<LeverageInput> {
                   fontSize: 24,
                   letterSpacing: 2,
                 ),
-                onChanged: (String value) async {
+                onChanged: (String value) {
                   setState(() {
                     entryText = value;
                   });

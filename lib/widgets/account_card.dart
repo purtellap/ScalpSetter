@@ -6,7 +6,7 @@ import '../account.dart';
 
 class HomeAccountCard extends StatelessWidget {
 
-  Account account;
+  final Account account;
   HomeAccountCard(this.account);
 
   @override
@@ -18,7 +18,8 @@ class HomeAccountCard extends StatelessWidget {
       color: ThemeColors.overlayColor,
       child: InkWell(
         onTap: (){
-          Navigator.pushNamed(context, '/account');
+          FocusManager.instance.primaryFocus?.unfocus();
+          Navigator.pushNamed(context, '/account', arguments: {'account' : account});
         },
         child: Padding(
           padding: const EdgeInsets.all(16),

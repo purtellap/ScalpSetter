@@ -22,13 +22,15 @@ class ScalpCard extends StatefulWidget {
 }
 
 class _ScalpCardState extends State<ScalpCard> {
+
   @override
   Widget build(BuildContext context) {
-    Color accentColor = widget.isLong ? ThemeColors.longColor : ThemeColors.shortColor;
+
     return GestureDetector(
         onTap: (){
       // hide keyboard when tapping out
-      SystemChannels.textInput.invokeMethod('TextInput.hide');
+          FocusManager.instance.primaryFocus?.unfocus();
+          //SystemChannels.textInput.invokeMethod('TextInput.hide');
     }, child:Card(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16)
@@ -38,34 +40,74 @@ class _ScalpCardState extends State<ScalpCard> {
         padding: EdgeInsets.all(16),
         child: ScrollConfiguration(
           behavior: NoScrollBehavior(),
-          child: ListView(
-            children: <Widget>[
-              Center(
-                child: Text(
-                  '${widget.title}',
-                  style: TextStyle(
-                    color: accentColor,
-                    fontSize: 66,
-                    letterSpacing: 6,
-                  ),
-                ),
-              ),
-              SizedBox(height: 24,),
-              AnswerText(widget.currentAccount, '', '', ''),
-              SizedBox(height: 48,),
-              TitleText(text: 'Account Size', color: accentColor,),
-              PriceInput(underlineColor: accentColor),
-              SizedBox(height: 24,),
-              TitleText(text: 'Entry Price', color: accentColor,),
-              PriceInput(underlineColor: accentColor),
-              SizedBox(height: 24,),
-              TitleText(text: 'Stop Loss Price', color: accentColor,),
-              PriceInput(underlineColor: accentColor),
-            ],
-          ),
+          child: CalculationArea(widget.currentAccount, widget.title, widget.isLong),
         ),
       ),
     ),
+    );
+  }
+}
+
+class CalculationArea extends StatefulWidget {
+
+  final Account account;
+  final String title;
+  final bool isLong;
+
+  CalculationArea(this.account, this.title, this.isLong);
+
+  @override
+  _CalculationAreaState createState() => _CalculationAreaState();
+}
+
+class _CalculationAreaState extends State<CalculationArea> {
+
+  String accountSize = '';
+  String entryPrice = '';
+  String stopLoss = '';
+
+  @override
+  Widget build(BuildContext context) {
+    Color accentColor = widget.isLong ? ThemeColors.longColor : ThemeColors.shortColor;
+    return ListView(
+      children: <Widget>[
+        Center(
+          child: Text(
+            '${widget.title}',
+            style: TextStyle(
+              color: accentColor,
+              fontSize: 66,
+              letterSpacing: 6,
+            ),
+          ),
+        ),
+        SizedBox(height: 24,),
+        AnswerText(widget.account, accountSize, entryPrice, stopLoss, widget.isLong),
+        SizedBox(height: 48,),
+        TitleText(text: 'Account Size', color: accentColor,),
+        PriceInput(underlineColor: accentColor, entryText: accountSize,
+          onChange:  (val) => setState(() {
+            accountSize = val;
+          }
+          ),
+        ),
+        SizedBox(height: 24,),
+        TitleText(text: 'Entry Price', color: accentColor,),
+        PriceInput(underlineColor: accentColor, entryText: entryPrice,
+          onChange:  (val) => setState(() {
+            entryPrice = val;
+          }
+          ),
+        ),
+        SizedBox(height: 24,),
+        TitleText(text: 'Stop Loss Price', color: accentColor,),
+        PriceInput(underlineColor: accentColor, entryText: stopLoss,
+          onChange:  (val) => setState(() {
+            stopLoss = val;
+          },
+          ),
+        ),
+      ],
     );
   }
 }
@@ -76,8 +118,9 @@ class AnswerText extends StatefulWidget {
   final String accountSize;
   final String entryPrice;
   final String stopLoss;
+  final bool isLong;
 
-  AnswerText(this.account, this.accountSize, this.entryPrice, this.stopLoss);
+  AnswerText(this.account, this.accountSize, this.entryPrice, this.stopLoss, this.isLong);
 
   @override
   _AnswerTextState createState() => _AnswerTextState();
@@ -85,24 +128,58 @@ class AnswerText extends StatefulWidget {
 
 class _AnswerTextState extends State<AnswerText> {
 
-  //var answer = double.parse(widget.accountSize)  * ;
-
-  int calculateAnswer(){
+  String calculateAnswer(){
     try{
       double accountSize = double.parse(widget.accountSize);
       double entryPrice = double.parse(widget.entryPrice);
       double stopLoss = double.parse(widget.stopLoss);
 
-      return widget.account.leverage.floor();
+      double priceDiffFlat = widget.isLong ? entryPrice - stopLoss : stopLoss - entryPrice;
+      double priceDiffPercent = priceDiffFlat / entryPrice;
+
+      // liquidation price formula from a random example exchange that won't be named
+      double exchangeLiquidationFlat = (entryPrice * widget.account.leverage)/(widget.account.leverage + 1 - (0.005 * widget.account.leverage));
+      double exchangeLiquidationPercent = (entryPrice - exchangeLiquidationFlat)/entryPrice;
+
+      if(priceDiffPercent > exchangeLiquidationPercent){
+        return 'liquidation!';
+      }
+
+      // if no stop loss, lose all here
+       double standardLiquidationPercent = 1/widget.account.leverage;
+      //
+      // // default liquidation calculation
+      // // if(priceDiffPercent > standardLiquidationPercent){
+      // //   return 'liquidation!';
+      // // }
+      //
+      double standardLiquidationPrice = entryPrice * (1 - standardLiquidationPercent);
+
+
+      // can multiply risk amount by this because of stop loss
+      double riskMultiplier = standardLiquidationPercent / priceDiffPercent;
+
+      double riskAmountFlat = accountSize * widget.account.riskAmt;
+      double leveragedAmount = riskAmountFlat * widget.account.leverage;
+
+      double answer = leveragedAmount * riskMultiplier;
+
+      // double riskAmountFlat = accountSize * widget.account.riskAmt;
+      // double riskAmountSL = riskAmountFlat * priceDiffPercent;
+      // double riskMultiplier = riskAmountFlat / riskAmountSL;
+      //
+      // double contracts = riskAmountFlat * widget.account.leverage * riskMultiplier;
+
+      return answer.toString();
     }
     catch(e){
-      return 0;
+      return '0';
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    int answer = calculateAnswer();
+    String answer = calculateAnswer();
     return GestureDetector(
       onTap: (){
         Clipboard.setData(ClipboardData(text: '$answer'));
@@ -134,7 +211,6 @@ class _AnswerTextState extends State<AnswerText> {
             child: Text(
               'CONTRACTS',
               style: TextStyle(
-
                 color: ThemeColors.secondaryTextColor,
                 fontSize: 16,
                 letterSpacing: 6,
@@ -146,8 +222,6 @@ class _AnswerTextState extends State<AnswerText> {
     );
   }
 }
-
-
 
 class TitleText extends StatelessWidget {
 

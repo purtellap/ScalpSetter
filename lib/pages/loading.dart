@@ -18,8 +18,10 @@ class _LoadingState extends State<Loading> {
 
   loadAccounts() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
 
+      await Future.delayed(Duration(seconds: 2));
+
+      final prefs = await SharedPreferences.getInstance();
       // oh my
       ScalpSetter.accounts = List<Account>.from(json.decode(prefs.getString('accountsList')).map((i) => Account.fromJson(i)));
 
@@ -47,10 +49,14 @@ class _LoadingState extends State<Loading> {
       backgroundColor: ThemeColors.mainBkgColor,
       body: SafeArea(
         child: Center(
-          child: SpinKitChasingDots(
-            color: ThemeColors.accentColor,
-            size: 50,
+          child: Padding(
+            padding: const EdgeInsets.all(140),
+            child: Image.asset('assets/sslogo.png'),
           ),
+          // child: SpinKitChasingDots(
+          //   color: ThemeColors.accentColor,
+          //   size: 50,
+          // ),
         ),
       ),
     );
