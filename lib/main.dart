@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:scalpsetter/accounts_list.dart';
 import 'package:scalpsetter/pages/edit_account.dart';
 import 'package:scalpsetter/pages/home.dart';
 import 'package:scalpsetter/pages/loading.dart';
@@ -22,23 +23,27 @@ class ScalpSetter extends StatelessWidget {
     //     // hide keyboard when tapping out
     //     SystemChannels.textInput.invokeMethod('TextInput.hide');
     //   },
-      return MaterialApp(
-        theme: ThemeData(
-          brightness: Brightness.dark,
-          primaryColor: ThemeColors.accentColor,
-          accentColor: ThemeColors.accentColor,
-          textSelectionTheme: TextSelectionThemeData(
-            cursorColor: ThemeColors.accentColor,
-            selectionColor: Color(0x33000000),
-            selectionHandleColor: Colors.transparent,
+    //   return AccountsList(
+    //     accounts: [],
+    //     child:
+        return MaterialApp(
+          theme: ThemeData(
+            brightness: Brightness.dark,
+            primaryColor: ThemeColors.accentColor,
+            accentColor: ThemeColors.accentColor,
+            textSelectionTheme: TextSelectionThemeData(
+              cursorColor: ThemeColors.accentColor,
+              selectionColor: Color(0x33000000),
+              selectionHandleColor: Colors.transparent,
+            ),
           ),
-        ),
-        initialRoute: '/',
-        routes: {
-          '/': (context) => Loading(),
-          '/home': (context) => Home(),
-          '/account': (context) => AccountPage(),
-        },
-    );
+          initialRoute: '/',
+          routes: {
+            '/': (context) => Loading(),
+            '/home': (context) => Home(),
+            '/account': (context) => AccountPage(),
+          },
+    //),
+      );
   }
 }

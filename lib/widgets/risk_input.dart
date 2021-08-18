@@ -3,11 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:scalpsetter/res/colors.dart';
 
+import '../account.dart';
+
 
 class RiskInput extends StatefulWidget {
 
-  final String input;
-  RiskInput(this.input);
+  final Account account;
+  RiskInput(this.account);
 
   @override
   _RiskInputState createState() => _RiskInputState();
@@ -39,7 +41,7 @@ class _RiskInputState extends State<RiskInput> {
           children: [
             Flexible(
               child: TextFormField(
-                initialValue: widget.input,
+                initialValue: (widget.account.riskAmt * 100).toString(),
                 autocorrect: false,
                 enableSuggestions: false,
                 keyboardType: TextInputType.numberWithOptions(decimal: true, signed: false),
@@ -64,6 +66,10 @@ class _RiskInputState extends State<RiskInput> {
                 onChanged: (String value) {
                   setState(() {
                     entryText = value;
+                    double newRisk = double.tryParse(value);
+                    if (newRisk != null){
+                      widget.account.riskAmt = newRisk/100;
+                    }
                   });
                   return;
                 },

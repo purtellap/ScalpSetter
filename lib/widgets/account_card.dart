@@ -29,11 +29,14 @@ class HomeAccountCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(account.name, style: TextStyle(
-                    color: ThemeColors.secondaryTextColor,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1,
-                    fontSize: 20,
+                  Flexible(
+                    child: Text(account.name, style: TextStyle(
+                      color: ThemeColors.secondaryTextColor,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                      fontSize: 20,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   Text('${account.makerFee}/${account.takerFee}', style: TextStyle(

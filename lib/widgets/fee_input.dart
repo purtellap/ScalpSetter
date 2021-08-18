@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:scalpsetter/account.dart';
 import 'package:scalpsetter/res/colors.dart';
 
 class FeeInput extends StatefulWidget {
 
-  final String input;
-  FeeInput(this.input);
+  final Account account;
+  final bool isMaker;
+  FeeInput(this.account, this.isMaker);
 
   @override
   _FeeInputState createState() => _FeeInputState();
@@ -38,7 +40,7 @@ class _FeeInputState extends State<FeeInput> {
           children: [
             Flexible(
               child: TextFormField(
-                initialValue: widget.input,
+                initialValue: widget.isMaker ? widget.account.makerFee.toString() : widget.account.takerFee.toString(),
                 autocorrect: false,
                 enableSuggestions: false,
                 keyboardType: TextInputType.numberWithOptions(decimal: true, signed: false),
@@ -63,6 +65,10 @@ class _FeeInputState extends State<FeeInput> {
                 onChanged: (String value) {
                   setState(() {
                     entryText = value;
+                    double newFee = double.tryParse(value);
+                    if (newFee != null){
+                      widget.isMaker ? widget.account.makerFee = newFee : widget.account.takerFee = newFee;
+                    }
                   });
                   return;
                 },

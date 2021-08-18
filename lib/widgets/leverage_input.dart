@@ -3,10 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:scalpsetter/res/colors.dart';
 
+import '../account.dart';
+
 class LeverageInput extends StatefulWidget {
 
-  final String input;
-  LeverageInput(this.input);
+  // final String input;
+  // LeverageInput(this.input);
+  final Account account;
+  LeverageInput(this.account);
 
   @override
   _LeverageInputState createState() => _LeverageInputState();
@@ -38,7 +42,7 @@ class _LeverageInputState extends State<LeverageInput> {
           children: [
             Flexible(
               child: TextFormField(
-                initialValue: widget.input,
+                initialValue: widget.account.leverage.toString(),
                 autocorrect: false,
                 enableSuggestions: false,
                 keyboardType: TextInputType.number,
@@ -64,6 +68,10 @@ class _LeverageInputState extends State<LeverageInput> {
                 onChanged: (String value) {
                   setState(() {
                     entryText = value;
+                    double newLeverage = double.tryParse(value);
+                    if (newLeverage != null){
+                      widget.account.leverage = newLeverage;
+                    }
                   });
                   return;
                 },

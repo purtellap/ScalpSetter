@@ -25,7 +25,7 @@ class _LoadingState extends State<Loading> {
       // oh my
       ScalpSetter.accounts = List<Account>.from(json.decode(prefs.getString('accountsList')).map((i) => Account.fromJson(i)));
 
-      print(ScalpSetter.accounts[0].name);
+      //print(ScalpSetter.accounts[0].name);
 
     } catch (e) {
       print(e.toString());
