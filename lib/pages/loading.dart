@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:scalpsetter/account.dart';
 import 'package:scalpsetter/main.dart';
-import 'package:scalpsetter/res/colors.dart';
+import 'package:scalpsetter/manager/manager.dart';
+import 'package:scalpsetter/res/resources.dart';
 import 'package:scalpsetter/utils/SharedPref.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -16,22 +17,31 @@ class _LoadingState extends State<Loading> {
 
   SharedPref sharedPref = SharedPref();
 
+  bool setPref(SharedPreferences prefs, key){
+    prefs.setBool(key, true);
+    print('inserting preferences for: ' + key);
+    return true;
+  }
+
+  loadColors(BuildContext context) async {
+    // too lazy to write new methods. just using change method to update colors
+    final prefs = await SharedPreferences.getInstance();
+    InheritedManager.of(context).changeTheme(!(prefs.getBool(Keys.THEME_PREF) ?? setPref(prefs, Keys.THEME_PREF)));
+    InheritedManager.of(context).changeAccentColors(!(prefs.getBool(Keys.ACCENT_PREF) ?? setPref(prefs, Keys.ACCENT_PREF)));
+  }
+
   loadAccounts() async {
     try {
-
       await Future.delayed(Duration(seconds: 2));
-
       final prefs = await SharedPreferences.getInstance();
       // oh my
-      ScalpSetter.accounts = List<Account>.from(json.decode(prefs.getString('accountsList')).map((i) => Account.fromJson(i)));
-
-      //print(ScalpSetter.accounts[0].name);
+      ScalpSetter.accounts = List<Account>.from(json.decode(prefs.getString(Keys.ACCOUNTS_PREF)).map((i) => Account.fromJson(i)));
 
     } catch (e) {
       print(e.toString());
       ScalpSetter.accounts.add(Account.defaultAccount(1));
       final prefs = await SharedPreferences.getInstance();
-      prefs.setString('accountsList', json.encode(ScalpSetter.accounts));
+      prefs.setString(Keys.ACCOUNTS_PREF, json.encode(ScalpSetter.accounts));
     }
 
     Navigator.pushReplacementNamed(context, '/home');
@@ -45,8 +55,10 @@ class _LoadingState extends State<Loading> {
 
   @override
   Widget build(BuildContext context) {
+    final state = InheritedManager.of(context).state;
+    loadColors(context);
     return Scaffold(
-      backgroundColor: ThemeColors.mainBkgColor,
+      backgroundColor: state.backgroundColor,
       body: SafeArea(
         child: Center(
           child: Padding(

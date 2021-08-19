@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:scalpsetter/res/colors.dart';
+import 'package:scalpsetter/manager/manager.dart';
+import 'package:scalpsetter/res/resources.dart';
 
 class PriceInput extends StatefulWidget {
 
@@ -38,6 +39,7 @@ class _PriceInputState extends State<PriceInput> {
 
   @override
   Widget build(BuildContext context) {
+    final state = InheritedManager.of(context).state;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -48,7 +50,7 @@ class _PriceInputState extends State<PriceInput> {
                 autocorrect: false,
                 enableSuggestions: false,
                 keyboardType: TextInputType.numberWithOptions(decimal: true, signed: false),
-                cursorColor: ThemeColors.accentColor,
+                cursorColor: state.secondaryTextColor,
                 //maxLength: 25,
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(25),
@@ -62,7 +64,7 @@ class _PriceInputState extends State<PriceInput> {
                   ),
                 ),
                 style: TextStyle(
-                  color: ThemeColors.secondaryTextColor,
+                  color: state.secondaryTextColor,
                   fontSize: 24,
                   letterSpacing: 2,
                 ),
@@ -79,14 +81,14 @@ class _PriceInputState extends State<PriceInput> {
             ),
             IconButton(
               icon: Icon(Icons.clear_rounded),
-              color: ThemeColors.secondaryTextColor,
+              color: state.secondaryTextColor,
               onPressed: (){
                 clearTextInput();
               },
             ),
             IconButton(
               icon: Icon(Icons.copy_rounded),
-              color: ThemeColors.secondaryTextColor,
+              color: state.secondaryTextColor,
               onPressed: (){
                 Clipboard.setData(ClipboardData(text: widget.entryText));
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -107,7 +109,7 @@ class _PriceInputState extends State<PriceInput> {
         Padding(
           padding: EdgeInsets.only(top:8),
           child: Text(formattedPrice(widget.entryText),
-            style: TextStyle(color: inputError ? ThemeColors.errorColor : ThemeColors.textColor),
+            style: TextStyle(color: inputError ? ThemeColors.amberAccentColor : state.textColor),
           ),
         ),
       ],

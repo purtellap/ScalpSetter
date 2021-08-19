@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
-import 'package:scalpsetter/res/colors.dart';
+import 'package:scalpsetter/manager/manager.dart';
+import 'package:scalpsetter/res/resources.dart';
 import 'package:scalpsetter/widgets/fee_input.dart';
 import 'package:scalpsetter/widgets/scalp_card.dart';
 import 'package:scalpsetter/widgets/leverage_input.dart';
@@ -25,7 +25,10 @@ class _AccountPageState extends State<AccountPage> {
 
   save() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString('accountsList', json.encode(ScalpSetter.accounts));
+    prefs.setString(Keys.ACCOUNTS_PREF, json.encode(ScalpSetter.accounts));
+
+    // final provider = ThemeInherited.of(context);
+    // provider.changeAccentColors(Colors.amber);
   }
 
   addAccount() async{
@@ -39,16 +42,17 @@ class _AccountPageState extends State<AccountPage> {
       showDialog(
         context: context,
         builder: (BuildContext context) {
+          final state = InheritedManager.of(context).state;
           return AlertDialog(
             title: Text("Account Limit Reached"),
-            content: Text('You cannot have more than 8 accounts.', style: TextStyle(color: ThemeColors.secondaryTextColor),),
-            backgroundColor: ThemeColors.mainBkgColor,
+            content: Text('You cannot have more than 8 accounts.', style: TextStyle(color: state.secondaryTextColor),),
+            backgroundColor: state.backgroundColor,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8)
             ),
             actions: [
               TextButton(
-                child: Text("Okay", style: TextStyle(color: ThemeColors.textColor),),
+                child: Text("Okay", style: TextStyle(color: state.textColor),),
                 onPressed:  () {
                   Navigator.pop(context);
                 },
@@ -70,16 +74,17 @@ class _AccountPageState extends State<AccountPage> {
       showDialog(
         context: context,
         builder: (BuildContext context) {
+          final state = InheritedManager.of(context).state;
           return AlertDialog(
             title: Text("Account Minimum Reached"),
-            content: Text('You must have at least 1 account.', style: TextStyle(color: ThemeColors.secondaryTextColor),),
-            backgroundColor: ThemeColors.mainBkgColor,
+            content: Text('You must have at least 1 account.', style: TextStyle(color: state.secondaryTextColor),),
+            backgroundColor: state.backgroundColor,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8)
             ),
             actions: [
               TextButton(
-                child: Text("Okay", style: TextStyle(color: ThemeColors.textColor),),
+                child: Text("Okay", style: TextStyle(color: state.textColor),),
                 onPressed:  () {
                   Navigator.pop(context);
                 },
@@ -99,6 +104,8 @@ class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
 
+    final state = InheritedManager.of(context).state;
+
     Account account;
     final arguments = ModalRoute.of(context).settings.arguments as Map;
     if (arguments != null) account = arguments['account'];
@@ -116,7 +123,7 @@ class _AccountPageState extends State<AccountPage> {
         },
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          backgroundColor: ThemeColors.mainBkgColor,
+          backgroundColor: state.backgroundColor,
           appBar: AppBar(
             // leading: IconButton(
             //   icon: Icon(Icons.arrow_back_rounded),
@@ -127,25 +134,25 @@ class _AccountPageState extends State<AccountPage> {
             // ),
             backgroundColor: Colors.transparent,
             iconTheme: IconThemeData(
-              color: ThemeColors.accentColor,
+              color: state.textColor
             ),
             title: typing ? TextFormField(
               initialValue: account.name,
               autocorrect: false,
               enableSuggestions: false,
-              cursorColor: ThemeColors.accentColor,
+              cursorColor: state.secondaryTextColor,
               //maxLength: 25,
               inputFormatters: [LengthLimitingTextInputFormatter(18),],
               decoration: InputDecoration(
                 focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: ThemeColors.accentColor),
+                  borderSide: BorderSide(color: state.textColor),
                 ),
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: ThemeColors.underlineColor),
                 ),
               ),
               style: TextStyle(
-                color: ThemeColors.textColor,
+                color: state.textColor,
                 fontSize: 24,
                 letterSpacing: 2,
               ),
@@ -155,7 +162,7 @@ class _AccountPageState extends State<AccountPage> {
                 });
                 return;
               },
-            ) : Text(account.name, style: TextStyle(color: ThemeColors.textColor,),),
+            ) : Text(account.name, style: TextStyle(color: state.textColor,),),
             centerTitle: false,
             elevation: 0,
             actions: [
@@ -164,7 +171,7 @@ class _AccountPageState extends State<AccountPage> {
                 child: IconButton(
                   icon: Icon(
                     typing ? Icons.done_rounded : Icons.edit_rounded,
-                    color: Colors.white,
+                    color: state.textColor,
                   ),
                   onPressed: () {
                     setState(() {
@@ -178,7 +185,7 @@ class _AccountPageState extends State<AccountPage> {
                 child: IconButton(
                   icon: Icon(
                     Icons.delete_rounded,
-                    color: Colors.white,
+                    color: state.textColor,
                   ),
                   onPressed: () {
                     showDialog(
@@ -186,19 +193,19 @@ class _AccountPageState extends State<AccountPage> {
                       builder: (BuildContext context) {
                         return AlertDialog(
                           title: Text("Delete Account?"),
-                          backgroundColor: ThemeColors.mainBkgColor,
+                          backgroundColor: state.backgroundColor,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8)
                           ),
                           actions: [
                         TextButton(
-                        child: Text("No", style: TextStyle(color: ThemeColors.secondaryTextColor),),
+                        child: Text("No", style: TextStyle(color: state.secondaryTextColor),),
                         onPressed:  () {
                           Navigator.pop(context);
                         },
                         ),
                         TextButton(
-                        child: Text("Yes", style: TextStyle(color: ThemeColors.textColor),),
+                        child: Text("Yes", style: TextStyle(color: state.textColor),),
                         onPressed:  () {
                           Navigator.pop(context);
                           removeAccount(account);
@@ -225,7 +232,7 @@ class _AccountPageState extends State<AccountPage> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16)
                   ),
-                  color: ThemeColors.overlayColor,
+                  color: state.overlayColor,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
                     child: Column(
@@ -233,8 +240,8 @@ class _AccountPageState extends State<AccountPage> {
                         SizedBox(height: 4,),
                         Row(
                           children: [
-                            Expanded(child: TitleText(text: 'Risk Tolerance', color: ThemeColors.accountAccentColor,),),
-                            Expanded(child: TitleText(text: 'Leverage', color: ThemeColors.accountAccentColor,)),
+                            Expanded(child: TitleText(text: 'Risk Tolerance', color: state.longColor,),),
+                            Expanded(child: TitleText(text: 'Leverage', color: state.shortColor,)),
                           ],
                         ),
                         Row(
@@ -247,8 +254,8 @@ class _AccountPageState extends State<AccountPage> {
                         SizedBox(height: 24,),
                         Row(
                           children: [
-                            Expanded(child: TitleText(text: 'Maker Fee', color: ThemeColors.accountAccentColor,),),
-                            Expanded(child: TitleText(text: 'Taker Fee', color: ThemeColors.accountAccentColor,)),
+                            Expanded(child: TitleText(text: 'Maker Fee', color: state.longColor,),),
+                            Expanded(child: TitleText(text: 'Taker Fee', color: state.shortColor,)),
                           ],
                         ),
                         Row(
@@ -265,7 +272,7 @@ class _AccountPageState extends State<AccountPage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8)
                 ),
-                color: ThemeColors.overlayColor,
+                color: state.overlayColor,
                 child: InkWell(
                 onTap: (){
                   addAccount();
@@ -277,7 +284,7 @@ class _AccountPageState extends State<AccountPage> {
                         children: [
                           Center(
                             child: Text('ADD NEW ACCOUNT', style: TextStyle(
-                              color: ThemeColors.secondaryTextColor,
+                              color: state.secondaryTextColor,
                               fontWeight: FontWeight.bold,
                               letterSpacing: 1,
                               fontSize: 20,

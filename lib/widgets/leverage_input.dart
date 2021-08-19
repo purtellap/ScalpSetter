@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:scalpsetter/res/colors.dart';
+import 'package:scalpsetter/manager/manager.dart';
+import 'package:scalpsetter/res/resources.dart';
 
 import '../account.dart';
 
@@ -35,6 +36,7 @@ class _LeverageInputState extends State<LeverageInput> {
 
   @override
   Widget build(BuildContext context) {
+    final state = InheritedManager.of(context).state;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -46,7 +48,7 @@ class _LeverageInputState extends State<LeverageInput> {
                 autocorrect: false,
                 enableSuggestions: false,
                 keyboardType: TextInputType.number,
-                cursorColor: ThemeColors.accentColor,
+                cursorColor: state.secondaryTextColor,
                 //maxLength: 25,
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(3),
@@ -54,14 +56,14 @@ class _LeverageInputState extends State<LeverageInput> {
                 ],
                 decoration: InputDecoration(
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: ThemeColors.accentColor),
+                    borderSide: BorderSide(color: state.shortColor),
                   ),
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: ThemeColors.underlineColor),
                   ),
                 ),
                 style: TextStyle(
-                  color: ThemeColors.secondaryTextColor,
+                  color: state.secondaryTextColor,
                   fontSize: 24,
                   letterSpacing: 2,
                 ),
@@ -82,7 +84,7 @@ class _LeverageInputState extends State<LeverageInput> {
         Padding(
           padding: EdgeInsets.only(top:8),
           child: Text(formattedPrice(entryText),
-            style: TextStyle(color: inputError ? ThemeColors.errorColor : ThemeColors.textColor),
+            style: TextStyle(color: inputError ? ThemeColors.amberAccentColor : state.textColor),
           ),
         ),
       ],

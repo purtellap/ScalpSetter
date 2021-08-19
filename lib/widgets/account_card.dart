@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scalpsetter/main.dart';
-import 'package:scalpsetter/res/colors.dart';
+import 'package:scalpsetter/manager/manager.dart';
 
 import '../account.dart';
 
@@ -11,11 +10,12 @@ class HomeAccountCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final state = InheritedManager.of(context).state;
     return Card(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8)
       ),
-      color: ThemeColors.overlayColor,
+      color: state.overlayColor,
       child: InkWell(
         onTap: (){
           FocusManager.instance.primaryFocus?.unfocus();
@@ -31,7 +31,7 @@ class HomeAccountCard extends StatelessWidget {
                 children: [
                   Flexible(
                     child: Text(account.name, style: TextStyle(
-                      color: ThemeColors.secondaryTextColor,
+                      color: state.textColor,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1,
                       fontSize: 20,
@@ -40,7 +40,7 @@ class HomeAccountCard extends StatelessWidget {
                     ),
                   ),
                   Text('${account.makerFee}/${account.takerFee}', style: TextStyle(
-                    color: ThemeColors.textColor,
+                    color: state.secondaryTextColor,
                     letterSpacing: 1,
                     fontSize: 14,
                   ),
@@ -52,14 +52,14 @@ class HomeAccountCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('${account.leverage}x', style: TextStyle(
-                    color: ThemeColors.textColor,
+                    color: state.secondaryTextColor,
                     //fontWeight: FontWeight.bold,
                     letterSpacing: 1,
                     fontSize: 16,
                     ),
                   ),
                   Text('${account.riskAmt * 100}%', style: TextStyle(
-                    color: ThemeColors.textColor,
+                    color: state.secondaryTextColor,
                     letterSpacing: 1,
                     fontSize: 14,
                     ),

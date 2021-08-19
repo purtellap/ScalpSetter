@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:scalpsetter/res/colors.dart';
+import 'package:scalpsetter/manager/manager.dart';
+import 'package:scalpsetter/res/resources.dart';
 import 'package:scalpsetter/utils/noscroll_behavior.dart';
 import 'package:scalpsetter/widgets/fee_input.dart';
 import 'package:scalpsetter/widgets/price_input.dart';
@@ -25,7 +26,7 @@ class _ScalpCardState extends State<ScalpCard> {
 
   @override
   Widget build(BuildContext context) {
-
+    final state = InheritedManager.of(context).state;
     return GestureDetector(
         onTap: (){
       // hide keyboard when tapping out
@@ -35,7 +36,7 @@ class _ScalpCardState extends State<ScalpCard> {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16)
       ),
-      color: ThemeColors.overlayColor,
+      color: state.overlayColor,
       child: Padding(
         padding: EdgeInsets.all(16),
         child: ScrollConfiguration(
@@ -68,7 +69,8 @@ class _CalculationAreaState extends State<CalculationArea> {
 
   @override
   Widget build(BuildContext context) {
-    Color accentColor = widget.isLong ? ThemeColors.longColor : ThemeColors.shortColor;
+    final state = InheritedManager.of(context).state;
+    Color accentColor = widget.isLong ? state.longColor : state.shortColor;
     return ListView(
       children: <Widget>[
         Center(
@@ -180,6 +182,7 @@ class _AnswerTextState extends State<AnswerText> {
   @override
   Widget build(BuildContext context) {
     String answer = calculateAnswer();
+    final state = InheritedManager.of(context).state;
     return GestureDetector(
       onTap: (){
         Clipboard.setData(ClipboardData(text: '$answer'));
@@ -201,7 +204,7 @@ class _AnswerTextState extends State<AnswerText> {
             child: Text(
               '$answer',
               style: TextStyle(
-                color: ThemeColors.errorColor,
+                color: ThemeColors.amberAccentColor,
                 fontSize: 24,
                 letterSpacing: 6,
               ),
@@ -211,7 +214,7 @@ class _AnswerTextState extends State<AnswerText> {
             child: Text(
               'CONTRACTS',
               style: TextStyle(
-                color: ThemeColors.secondaryTextColor,
+                color: state.secondaryTextColor,
                 fontSize: 16,
                 letterSpacing: 6,
               ),

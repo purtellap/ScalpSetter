@@ -3,9 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:scalpsetter/main.dart';
-import 'package:scalpsetter/res/colors.dart';
+import 'package:scalpsetter/manager/manager.dart';
+import 'package:scalpsetter/res/resources.dart';
 import 'package:scalpsetter/widgets/account_card.dart';
 import 'package:scalpsetter/widgets/scalp_card.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../account.dart';
 
@@ -23,7 +25,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-
+    final state = InheritedManager.of(context).state;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -32,7 +34,7 @@ class _HomeState extends State<Home> {
         systemNavigationBarIconBrightness: Brightness.light,
       ),
       child: Scaffold(
-        backgroundColor: ThemeColors.mainBkgColor,
+        backgroundColor: state.backgroundColor,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -41,10 +43,10 @@ class _HomeState extends State<Home> {
             child: IconButton(
               icon: Icon(
                 Icons.home_rounded,
-                color: Colors.white,
+                color: state.textColor,
               ),
-              onPressed: () {
-                // do something
+              onPressed: () async {
+
               },
             ),
           ),
@@ -52,16 +54,19 @@ class _HomeState extends State<Home> {
             IconButton(
               icon: Icon(
                 Icons.nightlight_round,
-                color: Colors.white,
+                color: state.textColor,
               ),
-              onPressed: () {
-                // do something
+              onPressed: () async {
+                final prefs = await SharedPreferences.getInstance();
+                bool b = prefs.getBool(Keys.THEME_PREF);
+                InheritedManager.of(context).changeTheme(b);
+                prefs.setBool(Keys.THEME_PREF, !b);
               },
             ),
             IconButton(
               icon: Icon(
                 Icons.favorite_rounded,
-                color: Colors.white,
+                color: state.textColor,
               ),
               onPressed: () {
                 // do something
@@ -71,11 +76,14 @@ class _HomeState extends State<Home> {
               padding: const EdgeInsets.fromLTRB(0,0,16,0),
               child: IconButton(
                 icon: Icon(
-                  Icons.settings_rounded,
-                  color: Colors.white,
+                  Icons.invert_colors_on_rounded,
+                  color: state.textColor,
                 ),
-                onPressed: () {
-                  // do something
+                onPressed: () async{
+                  final prefs = await SharedPreferences.getInstance();
+                  bool b = prefs.getBool(Keys.ACCENT_PREF);
+                  InheritedManager.of(context).changeAccentColors(b);
+                  prefs.setBool(Keys.ACCENT_PREF, !b);
                 },
               ),
             ),
