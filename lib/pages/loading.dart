@@ -17,9 +17,9 @@ class _LoadingState extends State<Loading> {
 
   SharedPref sharedPref = SharedPref();
 
-  bool setPref(SharedPreferences prefs, key){
+  bool setPref(SharedPreferences prefs, String key){
     prefs.setBool(key, true);
-    print('inserting preferences for: ' + key);
+    //print('inserting preferences for: ' + key);
     return true;
   }
 
@@ -30,9 +30,8 @@ class _LoadingState extends State<Loading> {
     InheritedManager.of(context).changeAccentColors(!(prefs.getBool(Keys.ACCENT_PREF) ?? setPref(prefs, Keys.ACCENT_PREF)));
   }
 
-  loadAccounts() async {
+  loadAccounts(BuildContext context) async {
     try {
-      await Future.delayed(Duration(seconds: 2));
       final prefs = await SharedPreferences.getInstance();
       // oh my
       ScalpSetter.accounts = List<Account>.from(json.decode(prefs.getString(Keys.ACCOUNTS_PREF)).map((i) => Account.fromJson(i)));
@@ -43,20 +42,25 @@ class _LoadingState extends State<Loading> {
       final prefs = await SharedPreferences.getInstance();
       prefs.setString(Keys.ACCOUNTS_PREF, json.encode(ScalpSetter.accounts));
     }
+  }
 
+  load() async {
+    // ????
+    await loadColors(context);
+    await loadAccounts(context);
+    await Future.delayed(Duration(seconds: 2));
     Navigator.pushReplacementNamed(context, '/home');
   }
 
   @override
   void initState() {
     super.initState();
-    loadAccounts();
+    load();
   }
 
   @override
   Widget build(BuildContext context) {
     final state = InheritedManager.of(context).state;
-    loadColors(context);
     return Scaffold(
       backgroundColor: state.backgroundColor,
       body: SafeArea(
