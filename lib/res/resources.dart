@@ -7,6 +7,10 @@ class Keys {
   static const String ACCOUNTS_PREF = 'accountsList';
 }
 
+class Dimens {
+  static const int BORDER_RADIUS = 16;
+}
+
 class ThemeColors {
 
   // Dark Theme
@@ -31,4 +35,28 @@ class ThemeColors {
   static const Color amberAccentColor = Colors.amber;
   static const Color underlineColor = Color(0x44000000);
   static const Color selectionColor = Color(0x33000000);
+}
+
+class Strings {
+  static const List titles = ['LONG', 'SHORT'];
+  static const String errorText = 'Did you fat-finger?';
+  static const String liquidated = 'liquidation!';
+
+  static const String copied = 'Copied to clipboard';
+  static const String okay = 'Okay';
+  static const String yes = 'Yes';
+  static const String no = 'No';
+
+  static const String acctMaxTitle = 'Account Limit Reached';
+  static const String acctMaxDesc = 'You cannot have more than 8 accounts.';
+  static const String acctMinTitle = 'Account Minimum Reached';
+  static const String acctMinDesc = 'You must have at least 1 account.';
+
+  static const String deleteTitle = 'Delete Account?';
+
+  static const String btcAddress = '';
+  static const String donoYes = 'Copy BTC Address';
+  static const String donoNo = 'Not today';
+  static const String donoTitle = 'Donations Appreciated';
+  static const String donoDesc = 'If this app helped you lose money a little slower, feel free to slide some satoshis this way.';
 }

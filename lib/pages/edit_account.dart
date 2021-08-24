@@ -23,19 +23,21 @@ class _AccountPageState extends State<AccountPage> {
 
   bool typing = false;
 
-  save() async {
+  save(BuildContext context, List<Account> accounts) async {
+    InheritedManager.of(context).updateAccountList(accounts);
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString(Keys.ACCOUNTS_PREF, json.encode(ScalpSetter.accounts));
-
+    prefs.setString(Keys.ACCOUNTS_PREF, json.encode(InheritedManager.of(context).state.accounts));
     // final provider = ThemeInherited.of(context);
     // provider.changeAccentColors(Colors.amber);
   }
 
-  addAccount() async{
-    if(ScalpSetter.accounts.length < 8){
-      Account newAccount = Account.defaultAccount(ScalpSetter.accounts.length + 1);
-      ScalpSetter.accounts.add(newAccount);
-      save();
+  addAccount(BuildContext context) async{
+    final state = InheritedManager.of(context).state;
+    if(state.accounts.length < 8){
+      Account newAccount = Account.defaultAccount(state.accounts.length + 1);
+      List<Account> newAccounts = List.from(state.accounts);
+      newAccounts.add(newAccount);
+      save(context, newAccounts);
       Navigator.pushReplacementNamed(context, '/account', arguments: {'account' : newAccount});
     }
     else{
@@ -44,15 +46,15 @@ class _AccountPageState extends State<AccountPage> {
         builder: (BuildContext context) {
           final state = InheritedManager.of(context).state;
           return AlertDialog(
-            title: Text("Account Limit Reached"),
-            content: Text('You cannot have more than 8 accounts.', style: TextStyle(color: state.secondaryTextColor),),
+            title: Text(Strings.acctMaxTitle, style: TextStyle(color: state.textColor)),
+            content: Text(Strings.acctMaxDesc, style: TextStyle(color: state.secondaryTextColor),),
             backgroundColor: state.backgroundColor,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8)
             ),
             actions: [
               TextButton(
-                child: Text("Okay", style: TextStyle(color: state.textColor),),
+                child: Text(Strings.okay, style: TextStyle(color: state.textColor),),
                 onPressed:  () {
                   Navigator.pop(context);
                 },
@@ -64,36 +66,38 @@ class _AccountPageState extends State<AccountPage> {
     }
   }
 
-  removeAccount(account) async{
-    if(ScalpSetter.accounts.length > 1){
-      ScalpSetter.accounts.remove(account);
-      save();
-      Navigator.pop(context);
-    }
-    else{
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          final state = InheritedManager.of(context).state;
-          return AlertDialog(
-            title: Text("Account Minimum Reached"),
-            content: Text('You must have at least 1 account.', style: TextStyle(color: state.secondaryTextColor),),
-            backgroundColor: state.backgroundColor,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8)
+  removeAccount(BuildContext context, Account account) async{
+    final state = InheritedManager.of(context).state;
+    List<Account> accounts = List.from(state.accounts);
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(Strings.deleteTitle, style: TextStyle(color: state.textColor)),
+          backgroundColor: state.backgroundColor,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8)
+          ),
+          actions: [
+            TextButton(
+              child: Text(Strings.no, style: TextStyle(color: state.secondaryTextColor),),
+              onPressed:  () {
+                Navigator.pop(context);
+              },
             ),
-            actions: [
-              TextButton(
-                child: Text("Okay", style: TextStyle(color: state.textColor),),
-                onPressed:  () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
+            TextButton(
+              child: Text(Strings.yes, style: TextStyle(color: state.textColor),),
+              onPressed:  () {
+                Navigator.pop(context);
+                accounts.remove(account);
+                save(context, accounts);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -112,7 +116,7 @@ class _AccountPageState extends State<AccountPage> {
 
     return WillPopScope(
       onWillPop:  () async {
-        save();
+        save(context, state.accounts);
         Navigator.pop(context, true);
         return true;
       },
@@ -188,33 +192,31 @@ class _AccountPageState extends State<AccountPage> {
                     color: state.textColor,
                   ),
                   onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text("Delete Account?"),
-                          backgroundColor: state.backgroundColor,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8)
-                          ),
-                          actions: [
-                        TextButton(
-                        child: Text("No", style: TextStyle(color: state.secondaryTextColor),),
-                        onPressed:  () {
-                          Navigator.pop(context);
+                    if(state.accounts.length > 1){
+                      removeAccount(context, account);
+                    }
+                    else{
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          final state = InheritedManager.of(context).state;
+                          return AlertDialog(
+                            title: Text(Strings.acctMinTitle, style: TextStyle(color: state.textColor)),
+                            content: Text(Strings.acctMinDesc, style: TextStyle(color: state.secondaryTextColor),),
+                            backgroundColor: state.backgroundColor,
+                            shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)
+                              ),
+                            actions: [
+                              TextButton(
+                                child: Text(Strings.okay, style: TextStyle(color: state.textColor),),
+                                onPressed:  () {Navigator.pop(context);},
+                              ),
+                            ],
+                          );
                         },
-                        ),
-                        TextButton(
-                        child: Text("Yes", style: TextStyle(color: state.textColor),),
-                        onPressed:  () {
-                          Navigator.pop(context);
-                          removeAccount(account);
-                        },
-                        ),
-                          ],
-                        );
-                      },
-                    );
+                      );
+                    }
                     // setState(() {
                     //
                     // });
@@ -275,7 +277,7 @@ class _AccountPageState extends State<AccountPage> {
                 color: state.overlayColor,
                 child: InkWell(
                 onTap: (){
-                  addAccount();
+                  addAccount(context);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(16),

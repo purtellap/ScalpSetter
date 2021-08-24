@@ -144,7 +144,7 @@ class _AnswerTextState extends State<AnswerText> {
       double exchangeLiquidationPercent = (entryPrice - exchangeLiquidationFlat)/entryPrice;
 
       if(priceDiffPercent > exchangeLiquidationPercent){
-        return 'liquidation!';
+        return Strings.liquidated;
       }
 
       // if no stop loss, lose all here
@@ -187,7 +187,7 @@ class _AnswerTextState extends State<AnswerText> {
       onTap: (){
         Clipboard.setData(ClipboardData(text: '$answer'));
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: const Text('Copied to clipboard', style: TextStyle(
+          content: const Text(Strings.copied, style: TextStyle(
             color: Colors.grey,
             fontWeight: FontWeight.bold,
             letterSpacing: 1.5,

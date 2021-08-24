@@ -29,7 +29,7 @@ class _RiskInputState extends State<RiskInput> {
     }
     catch (e){
       inputError = true;
-      return 'Did you fat-finger?';
+      return Strings.errorText;
     }
   }
 

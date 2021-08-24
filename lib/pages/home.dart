@@ -18,14 +18,12 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
-  List titles = ['LONG', 'SHORT'];
   List bools = [true, false];
-
-  Account currentAccount = ScalpSetter.accounts[0];
 
   @override
   Widget build(BuildContext context) {
     final state = InheritedManager.of(context).state;
+    Account currentAccount = state.accounts[0];
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -53,6 +51,18 @@ class _HomeState extends State<Home> {
           actions: [
             IconButton(
               icon: Icon(
+                Icons.thermostat_rounded,
+                color: state.textColor,
+              ),
+              onPressed: () async{
+                final prefs = await SharedPreferences.getInstance();
+                bool b = prefs.getBool(Keys.ACCENT_PREF);
+                InheritedManager.of(context).changeAccentColors(b);
+                prefs.setBool(Keys.ACCENT_PREF, !b);
+              },
+            ),
+            IconButton(
+              icon: Icon(
                 Icons.nightlight_round,
                 color: state.textColor,
               ),
@@ -63,28 +73,55 @@ class _HomeState extends State<Home> {
                 prefs.setBool(Keys.THEME_PREF, !b);
               },
             ),
-            IconButton(
-              icon: Icon(
-                Icons.favorite_rounded,
-                color: state.textColor,
-              ),
-              onPressed: () {
-                // do something
-              },
-            ),
             Padding(
               padding: const EdgeInsets.fromLTRB(0,0,16,0),
               child: IconButton(
                 icon: Icon(
-                  Icons.invert_colors_on_rounded,
+                  Icons.favorite_rounded,
                   color: state.textColor,
                 ),
-                onPressed: () async{
-                  final prefs = await SharedPreferences.getInstance();
-                  bool b = prefs.getBool(Keys.ACCENT_PREF);
-                  InheritedManager.of(context).changeAccentColors(b);
-                  prefs.setBool(Keys.ACCENT_PREF, !b);
-                },
+                onPressed: () {
+                  showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text(Strings.donoTitle, style: TextStyle(color: state.textColor)),
+                    content: Text(Strings.donoDesc,
+                      style: TextStyle(color: state.secondaryTextColor),
+                    ),
+                    backgroundColor: state.backgroundColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16)
+                    ),
+                    actions: [
+                      TextButton(
+                        child: Text(Strings.donoNo, style: TextStyle(color: state.secondaryTextColor),),
+                        onPressed:  () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      TextButton(
+                        child: Text(Strings.donoYes, style: TextStyle(color: ThemeColors.amberAccentColor),),
+                        onPressed:  () {
+                          Clipboard.setData(ClipboardData(text: Strings.btcAddress));
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: const Text(Strings.copied, style: TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1.5,
+                            ),
+                                textAlign: TextAlign.center
+                            ),
+                            duration: const Duration(seconds: 1),
+                            backgroundColor: Colors.black,
+                          ));
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  );
+                },);
+                }
               ),
             ),
           ],
@@ -98,10 +135,10 @@ class _HomeState extends State<Home> {
                 options: CarouselOptions(enableInfiniteScroll: false, viewportFraction: .92,
                   height: 100,
                   onPageChanged: (index, reason) {
-                    setState(() {currentAccount = ScalpSetter.accounts[index];});
+                    setState(() {currentAccount = state.accounts[index];});
                   }
                 ),
-                items: ScalpSetter.accounts.map((i) {
+                items: state.accounts.map((i) {
                   return Builder(
                     builder: (BuildContext context) {
                       return HomeAccountCard(i);
@@ -112,12 +149,12 @@ class _HomeState extends State<Home> {
               Expanded(
                 child: CarouselSlider(
                   options: CarouselOptions(enableInfiniteScroll: false, viewportFraction: .92,
-                      aspectRatio: 1/MediaQuery.of(context).devicePixelRatio,
+                      aspectRatio: MediaQuery.of(context).size.width/MediaQuery.of(context).size.height,
                     ),
                   items: [0,1].map((i) {
                     return Builder(
                       builder: (BuildContext context) {
-                        return ScalpCard(title: titles[i], isLong: bools[i], currentAccount: currentAccount,);
+                        return ScalpCard(title: Strings.titles[i], isLong: bools[i], currentAccount: currentAccount,);
                       },
                     );
                   }).toList(),

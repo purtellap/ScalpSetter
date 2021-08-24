@@ -33,7 +33,7 @@ class _PriceInputState extends State<PriceInput> {
     }
     catch (e){
       inputError = true;
-      return 'Did you fat-finger?';
+      return Strings.errorText;
     }
   }
 
@@ -92,7 +92,7 @@ class _PriceInputState extends State<PriceInput> {
               onPressed: (){
                 Clipboard.setData(ClipboardData(text: widget.entryText));
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: const Text('Copied to clipboard', style: TextStyle(
+                  content: const Text(Strings.copied, style: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1.5,

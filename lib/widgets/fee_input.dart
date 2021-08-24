@@ -28,7 +28,7 @@ class _FeeInputState extends State<FeeInput> {
     }
     catch (e){
       inputError = true;
-      return 'Did you fat-finger?';
+      return Strings.errorText;
     }
   }
 

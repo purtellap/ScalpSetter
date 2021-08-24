@@ -30,7 +30,7 @@ class _LeverageInputState extends State<LeverageInput> {
     }
     catch (e){
       inputError = true;
-      return 'Did you fat-finger?';
+      return Strings.errorText;
     }
   }
 

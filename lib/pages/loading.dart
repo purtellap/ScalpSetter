@@ -34,13 +34,14 @@ class _LoadingState extends State<Loading> {
     try {
       final prefs = await SharedPreferences.getInstance();
       // oh my
-      ScalpSetter.accounts = List<Account>.from(json.decode(prefs.getString(Keys.ACCOUNTS_PREF)).map((i) => Account.fromJson(i)));
+      InheritedManager.of(context).updateAccountList(List<Account>.from(
+          json.decode(prefs.getString(Keys.ACCOUNTS_PREF))
+              .map((i) => Account.fromJson(i))));
 
     } catch (e) {
-      print(e.toString());
-      ScalpSetter.accounts.add(Account.defaultAccount(1));
       final prefs = await SharedPreferences.getInstance();
-      prefs.setString(Keys.ACCOUNTS_PREF, json.encode(ScalpSetter.accounts));
+      prefs.setString(Keys.ACCOUNTS_PREF, json.encode([Account.defaultAccount(1)]));
+      InheritedManager.of(context).updateAccountList([Account.defaultAccount(1)]);
     }
   }
 
