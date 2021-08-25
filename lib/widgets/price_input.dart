@@ -48,6 +48,7 @@ class _PriceInputState extends State<PriceInput> {
             Flexible(
               child: TextField(
                 autocorrect: false,
+                autofocus: false,
                 enableSuggestions: false,
                 keyboardType: TextInputType.numberWithOptions(decimal: true, signed: false),
                 cursorColor: state.secondaryTextColor,
@@ -80,6 +81,7 @@ class _PriceInputState extends State<PriceInput> {
               ),
             ),
             IconButton(
+              splashRadius: Dimens.splashRadius,
               icon: Icon(Icons.clear_rounded),
               color: state.secondaryTextColor,
               onPressed: (){
@@ -87,6 +89,7 @@ class _PriceInputState extends State<PriceInput> {
               },
             ),
             IconButton(
+              splashRadius: Dimens.splashRadius,
               icon: Icon(Icons.copy_rounded),
               color: state.secondaryTextColor,
               onPressed: (){

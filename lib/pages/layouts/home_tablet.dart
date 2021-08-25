@@ -39,10 +39,8 @@ class _HomeTabletState extends State<HomeTablet> {
           leading: Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
             child: IconButton(
-              icon: Icon(
-                Icons.home_rounded,
-                color: state.textColor,
-              ),
+              splashRadius: Dimens.splashRadius,
+              icon: Image.asset('assets/sslogo.png'),
               onPressed: () async {
 
               },
@@ -50,6 +48,7 @@ class _HomeTabletState extends State<HomeTablet> {
           ),
           actions: [
             IconButton(
+              splashRadius: Dimens.splashRadius,
               icon: Icon(
                 Icons.thermostat_rounded,
                 color: state.textColor,
@@ -62,6 +61,7 @@ class _HomeTabletState extends State<HomeTablet> {
               },
             ),
             IconButton(
+              splashRadius: Dimens.splashRadius,
               icon: Icon(
                 Icons.nightlight_round,
                 color: state.textColor,
@@ -76,6 +76,7 @@ class _HomeTabletState extends State<HomeTablet> {
             Padding(
               padding: const EdgeInsets.fromLTRB(0,0,16,0),
               child: IconButton(
+                  splashRadius: Dimens.splashRadius,
                   icon: Icon(
                     Icons.favorite_rounded,
                     color: state.textColor,
@@ -95,13 +96,19 @@ class _HomeTabletState extends State<HomeTablet> {
                           ),
                           actions: [
                             TextButton(
-                              child: Text(Strings.donoNo, style: TextStyle(color: state.secondaryTextColor),),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Text(Strings.donoNo, style: TextStyle(color: state.secondaryTextColor),),
+                              ),
                               onPressed:  () {
                                 Navigator.pop(context);
                               },
                             ),
                             TextButton(
-                              child: Text(Strings.donoNo, style: TextStyle(color: ThemeColors.amberAccentColor),),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Text(Strings.donoYes, style: TextStyle(color: ThemeColors.amberAccentColor),),
+                              ),
                               onPressed:  () {
                                 Clipboard.setData(ClipboardData(text: Strings.btcAddress));
                                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(

@@ -66,8 +66,11 @@ class _LoadingState extends State<Loading> {
       backgroundColor: state.backgroundColor,
       body: SafeArea(
         child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(140),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: 128,
+              maxHeight: 128,
+            ),
             child: Image.asset('assets/sslogo.png'),
           ),
           // child: SpinKitChasingDots(

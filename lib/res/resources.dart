@@ -8,7 +8,8 @@ class Keys {
 }
 
 class Dimens {
-  static const int BORDER_RADIUS = 16;
+  static const int borderRadius = 16;
+  static const double splashRadius = 24;
 }
 
 class ThemeColors {
@@ -54,7 +55,7 @@ class Strings {
 
   static const String deleteTitle = 'Delete Account?';
 
-  static const String btcAddress = '';
+  static const String btcAddress = '32i8Q9KythnH8KFUrPdNrhPbTTgXE8mB7m';
   static const String donoYes = 'Copy BTC Address';
   static const String donoNo = 'Not today';
   static const String donoTitle = 'Donations Appreciated';

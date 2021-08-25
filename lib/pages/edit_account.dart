@@ -54,7 +54,10 @@ class _AccountPageState extends State<AccountPage> {
             ),
             actions: [
               TextButton(
-                child: Text(Strings.okay, style: TextStyle(color: state.textColor),),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(Strings.okay, style: TextStyle(color: state.textColor),),
+                ),
                 onPressed:  () {
                   Navigator.pop(context);
                 },
@@ -80,13 +83,19 @@ class _AccountPageState extends State<AccountPage> {
           ),
           actions: [
             TextButton(
-              child: Text(Strings.no, style: TextStyle(color: state.secondaryTextColor),),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(Strings.no, style: TextStyle(color: state.secondaryTextColor),),
+              ),
               onPressed:  () {
                 Navigator.pop(context);
               },
             ),
             TextButton(
-              child: Text(Strings.yes, style: TextStyle(color: state.textColor),),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(Strings.yes, style: TextStyle(color: state.textColor),),
+              ),
               onPressed:  () {
                 Navigator.pop(context);
                 accounts.remove(account);
@@ -129,13 +138,14 @@ class _AccountPageState extends State<AccountPage> {
           resizeToAvoidBottomInset: false,
           backgroundColor: state.backgroundColor,
           appBar: AppBar(
-            // leading: IconButton(
-            //   icon: Icon(Icons.arrow_back_rounded),
-            //   onPressed: () {
-            //     print('saving...');
-            //     Navigator.pop(context);
-            //   },
-            // ),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_rounded),
+              splashRadius: Dimens.splashRadius,
+              onPressed: () {
+                //print('saving...');
+                Navigator.pop(context);
+              },
+            ),
             backgroundColor: Colors.transparent,
             iconTheme: IconThemeData(
               color: state.textColor
@@ -173,6 +183,7 @@ class _AccountPageState extends State<AccountPage> {
               Padding(
                 padding: const EdgeInsets.all(0),
                 child: IconButton(
+                  splashRadius: Dimens.splashRadius,
                   icon: Icon(
                     typing ? Icons.done_rounded : Icons.edit_rounded,
                     color: state.textColor,
@@ -187,6 +198,7 @@ class _AccountPageState extends State<AccountPage> {
               Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: IconButton(
+                  splashRadius: Dimens.splashRadius,
                   icon: Icon(
                     Icons.delete_rounded,
                     color: state.textColor,
@@ -209,7 +221,10 @@ class _AccountPageState extends State<AccountPage> {
                               ),
                             actions: [
                               TextButton(
-                                child: Text(Strings.okay, style: TextStyle(color: state.textColor),),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Text(Strings.okay, style: TextStyle(color: state.textColor),),
+                                ),
                                 onPressed:  () {Navigator.pop(context);},
                               ),
                             ],
