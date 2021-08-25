@@ -44,7 +44,7 @@ class ScalpSetter extends StatelessWidget {
                 routes: {
                   '/': (context) => Loading(),
                   '/home': (context) => HomeAdapter(),
-                  '/account': (context) => AccountPageAdapter(),
+                  '/account': (context) => EditAccountAdapter(),
                 },
             );
           }

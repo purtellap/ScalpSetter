@@ -36,6 +36,7 @@ class ThemeColors {
   static const Color amberAccentColor = Colors.amber;
   static const Color underlineColor = Color(0x44000000);
   static const Color selectionColor = Color(0x33000000);
+  static const Color linkColor = Color(0xaaaaaaaa);
 }
 
 class Strings {
@@ -58,6 +59,6 @@ class Strings {
   static const String btcAddress = '32i8Q9KythnH8KFUrPdNrhPbTTgXE8mB7m';
   static const String donoYes = 'Copy BTC Address';
   static const String donoNo = 'Not today';
-  static const String donoTitle = 'Donations Appreciated';
-  static const String donoDesc = 'If this app helped you lose money a little slower, feel free to slide some satoshis this way.';
+  static const String donoTitle = 'Finding ScalpSetter helpful?';
+  static const String donoDesc = 'If this caused you to lose money a little slower, feel free to slide some satoshis this way.';
 }

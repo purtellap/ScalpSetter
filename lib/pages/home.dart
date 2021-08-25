@@ -1,10 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:scalpsetter/main.dart';
 import 'package:scalpsetter/manager/manager.dart';
 import 'package:scalpsetter/res/resources.dart';
+import 'package:scalpsetter/utils/utils.dart';
 import 'package:scalpsetter/widgets/account_card.dart';
 import 'package:scalpsetter/widgets/scalp_card.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -41,24 +43,44 @@ class _HomeState extends State<Home> {
             child: IconButton(
               splashRadius: Dimens.splashRadius,
               icon: Image.asset('assets/sslogo.png'),
-              onPressed: () async {
-
+              onPressed: () {
+                Utils.changeAccentColor(context);
               },
             ),
           ),
           actions: [
-            IconButton(
-              splashRadius: Dimens.splashRadius,
-              icon: Icon(
-                Icons.thermostat_rounded,
-                color: state.textColor,
+            Visibility(
+              visible: kIsWeb,
+              child: IconButton(
+                splashRadius: Dimens.splashRadius,
+                icon: ImageIcon(AssetImage('assets/google.png'), color: ThemeColors.linkColor),
+                onPressed: () {
+                  Utils.linkPlayStore(context);
+                },
               ),
-              onPressed: () async{
-                final prefs = await SharedPreferences.getInstance();
-                bool b = prefs.getBool(Keys.ACCENT_PREF);
-                InheritedManager.of(context).changeAccentColors(b);
-                prefs.setBool(Keys.ACCENT_PREF, !b);
-              },
+            ),
+            Visibility(
+              visible: kIsWeb,
+              child: IconButton(
+                splashRadius: Dimens.splashRadius,
+                icon: ImageIcon(AssetImage('assets/ios.png'), color: ThemeColors.linkColor),
+                onPressed: () {
+                  Utils.linkAppStore(context);
+                },
+              ),
+            ),
+            Visibility(
+              visible: !kIsWeb,
+              child: IconButton(
+                splashRadius: Dimens.splashRadius,
+                icon: Icon(
+                  Icons.exit_to_app_rounded,
+                  color: ThemeColors.linkColor,
+                ),
+                onPressed: () {
+                  Utils.openWebView(context);
+                },
+              ),
             ),
             IconButton(
               splashRadius: Dimens.splashRadius,
@@ -66,11 +88,8 @@ class _HomeState extends State<Home> {
                 Icons.nightlight_round,
                 color: state.textColor,
               ),
-              onPressed: () async {
-                final prefs = await SharedPreferences.getInstance();
-                bool b = prefs.getBool(Keys.THEME_PREF);
-                InheritedManager.of(context).changeTheme(b);
-                prefs.setBool(Keys.THEME_PREF, !b);
+              onPressed: () {
+                Utils.changeTheme(context);
               },
             ),
             Padding(

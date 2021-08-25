@@ -13,13 +13,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../account.dart';
 import '../main.dart';
 
-class AccountPage extends StatefulWidget {
+class EditAccount extends StatefulWidget {
 
   @override
-  _AccountPageState createState() => _AccountPageState();
+  _EditAccountState createState() => _EditAccountState();
 }
 
-class _AccountPageState extends State<AccountPage> {
+class _EditAccountState extends State<EditAccount> {
 
   bool typing = false;
 
@@ -124,10 +124,10 @@ class _AccountPageState extends State<AccountPage> {
     if (arguments != null) account = arguments['account'];
 
     return WillPopScope(
-      onWillPop:  () async {
+      onWillPop:  () {
         save(context, state.accounts);
         Navigator.pop(context, true);
-        return true;
+        return;
       },
       child: GestureDetector(
         onTap: (){
@@ -241,9 +241,9 @@ class _AccountPageState extends State<AccountPage> {
             ],
           ),
           body: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Card(
                   shape: RoundedRectangleBorder(
@@ -285,34 +285,37 @@ class _AccountPageState extends State<AccountPage> {
                     ),
                   ),
                 ),
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8)
-                ),
-                color: state.overlayColor,
-                child: InkWell(
-                onTap: (){
-                  addAccount(context);
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Center(
-                            child: Text('ADD NEW ACCOUNT', style: TextStyle(
-                              color: state.secondaryTextColor,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1,
-                              fontSize: 20,
+              Padding(
+                padding: const EdgeInsets.only(top: 0),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16)
+                  ),
+                  color: state.overlayColor,
+                  child: InkWell(
+                  onTap: (){
+                    addAccount(context);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Center(
+                              child: Text('ADD NEW ACCOUNT', style: TextStyle(
+                                color: state.secondaryTextColor,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1,
+                                fontSize: 20,
+                              ),
                             ),
-                          ),
-                            ),
-                       ],
+                              ),
+                         ],
+                        ),
                       ),
                     ),
                   ),
-                )
+              )
               ],
             ),
           ),

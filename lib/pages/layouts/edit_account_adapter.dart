@@ -1,49 +1,50 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:scalpsetter/manager/manager.dart';
 import 'package:scalpsetter/pages/edit_account.dart';
 
 import '../home.dart';
 
-class AccountPageWide extends StatefulWidget {
-
-  // final int flexWidth;
-  // final int flexHeight;
-  // AccountPageWide(this.flexWidth, this.flexHeight);
+class EditAccountDesktop extends StatefulWidget {
 
   @override
-  _AccountPageWideState createState() => _AccountPageWideState();
+  _EditAccountDesktopState createState() => _EditAccountDesktopState();
 }
 
-class _AccountPageWideState extends State<AccountPageWide> {
+class _EditAccountDesktopState extends State<EditAccountDesktop> {
   @override
   Widget build(BuildContext context) {
     final state = InheritedManager.of(context).state;
     return Container(
-      width: double.infinity,
-      child: Container(
-        width: 600,
-        child: AccountPage(),
+      color: state.backgroundColor,
+      child: Center(
+        child: Container(
+          padding: const EdgeInsets.only(top: 72),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+                maxWidth: 700,
+            ),
+            child: EditAccount(),
+          ),
+        ),
       ),
     );
   }
 }
 
-class AccountPageAdapter extends StatelessWidget {
+class EditAccountAdapter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
-    int widthFlex = -1;
-    int heightFlex = -1;
     return LayoutBuilder(
       builder: (context, constraints) {
-        double ar = constraints.maxWidth/constraints.maxHeight;
-        if(ar > 1){
-          return AccountPageWide();
+        if(constraints.maxWidth > 700 && kIsWeb){
+          return EditAccountDesktop();
         }
-        else{
-          return AccountPage();
+        else if (constraints.maxWidth > 600) {
+          return EditAccount();
+        } else {
+          return EditAccount();
         }
-
       },
     );
   }

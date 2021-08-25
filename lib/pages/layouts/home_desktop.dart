@@ -1,10 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:scalpsetter/main.dart';
 import 'package:scalpsetter/manager/manager.dart';
 import 'package:scalpsetter/res/resources.dart';
+import 'package:scalpsetter/utils/utils.dart';
 import 'package:scalpsetter/widgets/account_card.dart';
 import 'package:scalpsetter/widgets/scalp_card.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,6 +28,7 @@ class _HomeDesktopState extends State<HomeDesktop> {
   Widget build(BuildContext context) {
     final state = InheritedManager.of(context).state;
     Account currentAccount = state.accounts[0];
+    Color footerColor = state.overlayColor;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -47,31 +50,30 @@ class _HomeDesktopState extends State<HomeDesktop> {
                 leading: IconButton(
                   splashRadius: Dimens.splashRadius,
                   icon: Image.asset('assets/sslogo.png'),
-                  onPressed: () async {
-
+                  onPressed: () {
+                    Utils.changeAccentColor(context);
                   },
                 ),
-                //automaticallyImplyLeading: false,
-                // IconButton(
-                //   splashRadius: Dimens.splashRadius,
-                //   icon: Image.asset('assets/sslogo.png'),
-                //   onPressed: () async {
-                //
-                //   },
-                // ),
                 actions: [
-                  IconButton(
-                    splashRadius: Dimens.splashRadius,
-                    icon: Icon(
-                      Icons.thermostat_rounded,
-                      color: state.textColor,
+                  Visibility(
+                    visible: kIsWeb,
+                    child: IconButton(
+                      splashRadius: Dimens.splashRadius,
+                      icon: ImageIcon(AssetImage('assets/google.png'), color: ThemeColors.linkColor),
+                      onPressed: () {
+                        Utils.linkPlayStore(context);
+                      },
                     ),
-                    onPressed: () async{
-                      final prefs = await SharedPreferences.getInstance();
-                      bool b = prefs.getBool(Keys.ACCENT_PREF);
-                      InheritedManager.of(context).changeAccentColors(b);
-                      prefs.setBool(Keys.ACCENT_PREF, !b);
-                    },
+                  ),
+                  Visibility(
+                    visible: kIsWeb,
+                    child: IconButton(
+                      splashRadius: Dimens.splashRadius,
+                      icon: ImageIcon(AssetImage('assets/ios.png'), color: ThemeColors.linkColor),
+                      onPressed: () {
+                        Utils.linkAppStore(context);
+                      },
+                    ),
                   ),
                   IconButton(
                     splashRadius: Dimens.splashRadius,
@@ -87,7 +89,7 @@ class _HomeDesktopState extends State<HomeDesktop> {
                     },
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(0,0,64,0),
+                    padding: const EdgeInsets.fromLTRB(0,0,16,0),
                     child: IconButton(
                         splashRadius: Dimens.splashRadius,
                         icon: Icon(
