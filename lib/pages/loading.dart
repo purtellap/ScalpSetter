@@ -4,7 +4,7 @@ import 'package:scalpsetter/account.dart';
 import 'package:scalpsetter/main.dart';
 import 'package:scalpsetter/manager/manager.dart';
 import 'package:scalpsetter/res/resources.dart';
-import 'package:scalpsetter/utils/SharedPref.dart';
+import 'package:scalpsetter/utils/shared_pref.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 

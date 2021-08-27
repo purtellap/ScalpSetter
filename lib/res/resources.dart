@@ -40,6 +40,10 @@ class ThemeColors {
 }
 
 class Strings {
+  static const webLink = 'https://www.scalpsetter.com';
+  static const googlePlayLink = 'https://play.google.com/store/apps/details?id=com.austinpurtell.wf';
+  static const appStoreLink = '';
+
   static const List titles = ['LONG', 'SHORT'];
   static const String errorText = 'Did you fat-finger?';
   static const String liquidated = 'liquidation!';
@@ -61,4 +65,9 @@ class Strings {
   static const String donoNo = 'Not today';
   static const String donoTitle = 'Finding ScalpSetter helpful?';
   static const String donoDesc = 'If this caused you to lose money a little slower, feel free to slide some satoshis this way.';
+
+  static const String infoTitle = 'Price Discrepancy Notice';
+  static const String infoDesc = 'The formula used in this calculation may vary from the estimation or actual result on your exchange. It is '
+      'designed to take into account all fees associated with the trade and the price of the asset after your trade. '
+      'It assumes you use a limit order for entry.  Due to slippage and differences in exchange methods, the estimation will never be perfect.';
 }

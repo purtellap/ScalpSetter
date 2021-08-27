@@ -139,40 +139,59 @@ class _AnswerTextState extends State<AnswerText> {
       double priceDiffFlat = widget.isLong ? entryPrice - stopLoss : stopLoss - entryPrice;
       double priceDiffPercent = priceDiffFlat / entryPrice;
 
+      double riskAmountFlat = accountSize * widget.account.riskAmt;
+      double leverage = widget.account.leverage;
+      double takerFee = widget.account.takerFee/100;
+      double makerFee = widget.account.makerFee/100;
+
+      //print('percentRisk: $priceDiffPercent');
+      //print('takerfee: $takerFee');
+
+      // double pmBTC;
+      // double contracts;
+      // double slLoss;
+      // double exitFee;
+      // double entryFee;
+      // double pmEntry;
+      // double pmExit;
+      // double totalLoss;
+
+      // pmBTC = (contracts/leverage + contracts*takerFee)/entryPrice;
+      // pmExit = pmBTC * stopLoss;
+      // pmEntry = pmBTC * entryPrice;
+      //
+      // slLoss = pmExit * priceDiffPercent * leverage;
+      // exitFee = pmExit * takerFee * leverage;
+      // entryFee = pmEntry * makerFee * leverage;
+      //
+      // totalLoss = slLoss + exitFee + entryFee;
+
+      //contracts = pmBTC * entryPrice / (1/leverage + takerFee);
+
+      // ((contracts * (1/leverage + takerFee))
+
+      double contracts = riskAmountFlat/((takerFee + 1/leverage) * leverage/entryPrice * (
+          (stopLoss * priceDiffPercent) + (stopLoss * takerFee) + (entryPrice * makerFee)
+      ));
+
+      // --- LIQUIDATION STUFF - NOT PART OF EQUATION ----
       // liquidation price formula from a random example exchange that won't be named
       double exchangeLiquidationFlat = (entryPrice * widget.account.leverage)/(widget.account.leverage + 1 - (0.005 * widget.account.leverage));
       double exchangeLiquidationPercent = (entryPrice - exchangeLiquidationFlat)/entryPrice;
-
+      //print('el%: $exchangeLiquidationPercent');
       if(priceDiffPercent > exchangeLiquidationPercent){
         return Strings.liquidated;
       }
-
       // if no stop loss, lose all here
-       double standardLiquidationPercent = 1/widget.account.leverage;
+      //double standardLiquidationPercent = 1/widget.account.leverage;
       //
       // // default liquidation calculation
       // // if(priceDiffPercent > standardLiquidationPercent){
       // //   return 'liquidation!';
       // // }
       //
-      double standardLiquidationPrice = entryPrice * (1 - standardLiquidationPercent);
 
-
-      // can multiply risk amount by this because of stop loss
-      double riskMultiplier = standardLiquidationPercent / priceDiffPercent;
-
-      double riskAmountFlat = accountSize * widget.account.riskAmt;
-      double leveragedAmount = riskAmountFlat * widget.account.leverage;
-
-      double answer = leveragedAmount * riskMultiplier;
-
-      // double riskAmountFlat = accountSize * widget.account.riskAmt;
-      // double riskAmountSL = riskAmountFlat * priceDiffPercent;
-      // double riskMultiplier = riskAmountFlat / riskAmountSL;
-      //
-      // double contracts = riskAmountFlat * widget.account.leverage * riskMultiplier;
-
-      return answer.toString();
+      return '~' + contracts.floor().toString();
     }
     catch(e){
       return '0';

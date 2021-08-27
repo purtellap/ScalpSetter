@@ -42,7 +42,7 @@ class _HomeState extends State<Home> {
             padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
             child: IconButton(
               splashRadius: Dimens.splashRadius,
-              icon: Image.asset('assets/sslogo.png'),
+              icon: Image.asset('assets/sslogo64.png'),
               onPressed: () {
                 Utils.changeAccentColor(context);
               },
@@ -53,7 +53,7 @@ class _HomeState extends State<Home> {
               visible: kIsWeb,
               child: IconButton(
                 splashRadius: Dimens.splashRadius,
-                icon: ImageIcon(AssetImage('assets/google.png'), color: ThemeColors.linkColor),
+                icon: ImageIcon(AssetImage('assets/google64p.png'), color: ThemeColors.linkColor),
                 onPressed: () {
                   Utils.linkPlayStore(context);
                 },
@@ -63,7 +63,7 @@ class _HomeState extends State<Home> {
               visible: kIsWeb,
               child: IconButton(
                 splashRadius: Dimens.splashRadius,
-                icon: ImageIcon(AssetImage('assets/ios.png'), color: ThemeColors.linkColor),
+                icon: ImageIcon(AssetImage('assets/appstore64.png'), color: ThemeColors.linkColor),
                 onPressed: () {
                   Utils.linkAppStore(context);
                 },
@@ -82,10 +82,11 @@ class _HomeState extends State<Home> {
                 },
               ),
             ),
+            InfoAlert(),
             IconButton(
               splashRadius: Dimens.splashRadius,
               icon: Icon(
-                Icons.nightlight_round,
+                state.backgroundColor == ThemeColors.backgroundColorDark ? Icons.nightlight_round : Icons.wb_sunny_rounded,
                 color: state.textColor,
               ),
               onPressed: () {
@@ -94,61 +95,7 @@ class _HomeState extends State<Home> {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(0,0,16,0),
-              child: IconButton(
-                splashRadius: Dimens.splashRadius,
-                icon: Icon(
-                  Icons.favorite_rounded,
-                  color: state.textColor,
-                ),
-                onPressed: () {
-                  showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text(Strings.donoTitle, style: TextStyle(color: state.textColor)),
-                    content: Text(Strings.donoDesc,
-                      style: TextStyle(color: state.secondaryTextColor),
-                    ),
-                    backgroundColor: state.backgroundColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16)
-                    ),
-                    actions: [
-                      TextButton(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Text(Strings.donoNo, style: TextStyle(color: state.secondaryTextColor),),
-                        ),
-                        onPressed:  () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      TextButton(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Text(Strings.donoYes, style: TextStyle(color: ThemeColors.amberAccentColor),),
-                        ),
-                        onPressed:  () {
-                          Clipboard.setData(ClipboardData(text: Strings.btcAddress));
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: const Text(Strings.copied, style: TextStyle(
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1.5,
-                            ),
-                                textAlign: TextAlign.center
-                            ),
-                            duration: const Duration(seconds: 1),
-                            backgroundColor: Colors.black,
-                          ));
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
-                  );
-                },);
-                }
-              ),
+              child: DonateButton(),
             ),
           ],
         ),
