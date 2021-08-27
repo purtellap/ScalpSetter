@@ -191,7 +191,7 @@ class _AnswerTextState extends State<AnswerText> {
       // // }
       //
 
-      return '~' + contracts.floor().toString();
+      return contracts.floor().toString();
     }
     catch(e){
       return '0';
