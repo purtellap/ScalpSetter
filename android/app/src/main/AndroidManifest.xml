@@ -7,7 +7,7 @@
         </intent>
     </queries>
    <application
-        android:label="scalpsetter"
+        android:label="Scalp Setter"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

@@ -10,6 +10,10 @@ import 'package:scalpsetter/res/resources.dart';
 
 import 'account.dart';
 
+
+
+
+
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([
@@ -29,6 +33,7 @@ class ScalpSetter extends StatelessWidget {
             builder: (context){
               final state = InheritedManager.of(context).state;
               return MaterialApp(
+                title: Strings.title,
                 theme: ThemeData(
                   visualDensity: VisualDensity.adaptivePlatformDensity,
                   brightness: Brightness.dark,

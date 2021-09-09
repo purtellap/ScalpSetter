@@ -40,9 +40,10 @@ class ThemeColors {
 }
 
 class Strings {
-  static const webLink = 'https://www.scalpsetter.com';
-  static const googlePlayLink = 'https://play.google.com/store/apps/details?id=com.austinpurtell.wf';
-  static const appStoreLink = '';
+  static const String title = 'Scalp Setter';
+  static const String webLink = 'https://www.scalpsetter.com';
+  static const String googlePlayLink = 'https://play.google.com/store/apps/details?id=com.austinpurtell.wf';
+  static const String appStoreLink = '';
 
   static const List titles = ['LONG', 'SHORT'];
   static const String errorText = 'Did you fat-finger?';
