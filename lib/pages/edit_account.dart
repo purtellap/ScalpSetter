@@ -138,14 +138,14 @@ class _EditAccountState extends State<EditAccount> {
           resizeToAvoidBottomInset: false,
           backgroundColor: state.backgroundColor,
           appBar: AppBar(
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back_rounded),
-              splashRadius: Dimens.splashRadius,
-              onPressed: () {
-                //print('saving...');
-                Navigator.pop(context);
-              },
-            ),
+            // leading: IconButton(
+            //   icon: Icon(Icons.arrow_back_rounded),
+            //   splashRadius: Dimens.splashRadius,
+            //   onPressed: () {
+            //     //print('saving...');
+            //     Navigator.pop(context);
+            //   },
+            // ),
             backgroundColor: Colors.transparent,
             iconTheme: IconThemeData(
               color: state.textColor

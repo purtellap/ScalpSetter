@@ -35,7 +35,7 @@ class ThemeColors {
   // Accent Colors
   static const Color amberAccentColor = Colors.amber;
   static const Color underlineColor = Color(0x44000000);
-  static const Color selectionColor = Color(0x33000000);
+  static const Color selectionColor = Color(0x66888888);
   static const Color linkColor = Color(0xaaaaaaaa);
 }
 
