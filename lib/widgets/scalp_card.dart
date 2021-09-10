@@ -85,7 +85,7 @@ class _CalculationAreaState extends State<CalculationArea> {
         ),
         SizedBox(height: 24,),
         AnswerText(widget.account, accountSize, entryPrice, stopLoss, widget.isLong),
-        SizedBox(height: 48,),
+        SizedBox(height: 8,),
         TitleText(text: 'Account Size', color: accentColor,),
         PriceInput(underlineColor: accentColor, entryText: accountSize,
           onChange:  (val) => setState(() {
@@ -130,7 +130,9 @@ class AnswerText extends StatefulWidget {
 
 class _AnswerTextState extends State<AnswerText> {
 
-  String calculateAnswer(){
+  int i = 0;
+
+  Map<String, String> calculateAnswer(){
     try{
       double accountSize = double.parse(widget.accountSize);
       double entryPrice = double.parse(widget.entryPrice);
@@ -144,32 +146,6 @@ class _AnswerTextState extends State<AnswerText> {
       double takerFee = widget.account.takerFee/100;
       double makerFee = widget.account.makerFee/100;
 
-      //print('percentRisk: $priceDiffPercent');
-      //print('takerfee: $takerFee');
-
-      // double pmBTC;
-      // double contracts;
-      // double slLoss;
-      // double exitFee;
-      // double entryFee;
-      // double pmEntry;
-      // double pmExit;
-      // double totalLoss;
-
-      // pmBTC = (contracts/leverage + contracts*takerFee)/entryPrice;
-      // pmExit = pmBTC * stopLoss;
-      // pmEntry = pmBTC * entryPrice;
-      //
-      // slLoss = pmExit * priceDiffPercent * leverage;
-      // exitFee = pmExit * takerFee * leverage;
-      // entryFee = pmEntry * makerFee * leverage;
-      //
-      // totalLoss = slLoss + exitFee + entryFee;
-
-      //contracts = pmBTC * entryPrice / (1/leverage + takerFee);
-
-      // ((contracts * (1/leverage + takerFee))
-
       double contracts = riskAmountFlat/((takerFee + 1/leverage) * leverage/entryPrice * (
           (stopLoss * priceDiffPercent) + (stopLoss * takerFee) + (entryPrice * makerFee)
       ));
@@ -180,7 +156,7 @@ class _AnswerTextState extends State<AnswerText> {
       double exchangeLiquidationPercent = (entryPrice - exchangeLiquidationFlat)/entryPrice;
       //print('el%: $exchangeLiquidationPercent');
       if(priceDiffPercent > exchangeLiquidationPercent){
-        return Strings.liquidated;
+        return {'DOLLARS' : Strings.liquidated, 'UNITS' : Strings.liquidated, 'CONTRACTS' : Strings.liquidated,};
       }
       // if no stop loss, lose all here
       //double standardLiquidationPercent = 1/widget.account.leverage;
@@ -190,21 +166,48 @@ class _AnswerTextState extends State<AnswerText> {
       // //   return 'liquidation!';
       // // }
       //
+      double dollars = contracts/leverage;
+      double units = dollars/entryPrice;
 
-      return contracts.floor().toString();
+      Map<String, String> map = {
+        'DOLLARS' : dollars.toString(),
+        'UNITS' : units.toString(),
+        'CONTRACTS' : contracts.floor().toString(),
+      };
+      return map;
     }
     catch(e){
-      return '0';
+      return {'DOLLARS' : '0', 'UNITS' : '0', 'CONTRACTS' : '0'};
     }
   }
 
+  Map formattedAns(Map m){
+    return {
+      'DOLLARS' : '\$' + NumberFormat('#,##0.00', 'en_US').format(double.parse(m['DOLLARS'])),
+      'UNITS' : NumberFormat('#,##0.0########', 'en_US').format(double.parse(m['UNITS'])),
+      'CONTRACTS' : NumberFormat('#,##0', 'en_US').format(double.parse(m['CONTRACTS'])),
+    };
+  }
+    // try{
+    //   inputError = false;
+    //   return price.isNotEmpty ? '\$' + NumberFormat('#,##0.00', 'en_US').format(double.parse(price)) : '';
+    // }
+    // catch (e){
+    //   inputError = true;
+    //   return Strings.errorText;
+    // }
+
   @override
   Widget build(BuildContext context) {
-    String answer = calculateAnswer();
+    Map answers = calculateAnswer();
+    String descriptor = answers.keys.elementAt(i%answers.length);
+    String unformattedAnswer = answers[descriptor];
+    String formattedAnswer = formattedAns(answers)[descriptor];
+
     final state = InheritedManager.of(context).state;
     return GestureDetector(
       onTap: (){
-        Clipboard.setData(ClipboardData(text: '$answer'));
+        Clipboard.setData(ClipboardData(text: unformattedAnswer));
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: const Text(Strings.copied, style: TextStyle(
             color: Colors.grey,
@@ -221,7 +224,7 @@ class _AnswerTextState extends State<AnswerText> {
         children: [
           Center(
             child: Text(
-              '$answer',
+              formattedAnswer,
               style: TextStyle(
                 color: ThemeColors.amberAccentColor,
                 fontSize: 24,
@@ -229,9 +232,10 @@ class _AnswerTextState extends State<AnswerText> {
               ),
             ),
           ),
+          SizedBox(height: 4,),
           Center(
             child: Text(
-              'CONTRACTS',
+              descriptor,
               style: TextStyle(
                 color: state.secondaryTextColor,
                 fontSize: 16,
@@ -239,11 +243,41 @@ class _AnswerTextState extends State<AnswerText> {
               ),
             ),
           ),
+          Center(
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              splashRadius: Dimens.splashRadius,
+              icon: Icon(Icons.swap_horiz_rounded, color: state.secondaryTextColor,),
+              onPressed: () {
+                setState(() {
+                  i++;
+                });
+              },
+            ),
+          )
         ],
       ),
     );
   }
 }
+
+// DisplayAns(answer: answer, text: Strings.types[0], color: state.secondaryTextColor,)
+// class DisplayAns extends StatefulWidget {
+//
+//   DisplayAns({this.answer, this.text, this.color});
+//
+//   @override
+//   _DisplayAnsState createState() => _DisplayAnsState();
+// }
+//
+// class _DisplayAnsState extends State<DisplayAns> {
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return ;
+//   }
+// }
+
 
 class TitleText extends StatelessWidget {
 
