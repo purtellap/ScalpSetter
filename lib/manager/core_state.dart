@@ -22,8 +22,8 @@ class CoreState {
     this.overlayColor = ThemeColors.overlayColorDark,
     this.textColor = ThemeColors.textColorDark,
     this.secondaryTextColor = ThemeColors.secondaryTextColorDark,
-    this.longColor = ThemeColors.greenColor,
-    this.shortColor = ThemeColors.redColor,
+    this.longColor = ThemeColors.blueColor,
+    this.shortColor = ThemeColors.purpleColor,
   });
 
   // Makes a copy of the object for use in state manager

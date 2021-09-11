@@ -82,20 +82,30 @@ class _HomeState extends State<Home> {
                 },
               ),
             ),
-            InfoAlert(),
-            IconButton(
-              splashRadius: Dimens.splashRadius,
-              icon: Icon(
-                state.backgroundColor == ThemeColors.backgroundColorDark ? Icons.nightlight_round : Icons.wb_sunny_rounded,
-                color: state.textColor,
-              ),
-              onPressed: () {
-                Utils.changeTheme(context);
-              },
-            ),
+            InfoAlert(title: Strings.infoTitle, description: Strings.infoDesc,),
+            // IconButton(
+            //   splashRadius: Dimens.splashRadius,
+            //   icon: Icon(
+            //     state.backgroundColor == ThemeColors.backgroundColorDark ? Icons.nightlight_round : Icons.wb_sunny_rounded,
+            //     color: state.textColor,
+            //   ),
+            //   onPressed: () {
+            //     Utils.changeTheme(context);
+            //   },
+            // ),
+            DonateButton(),
             Padding(
               padding: const EdgeInsets.fromLTRB(0,0,16,0),
-              child: DonateButton(),
+              child: IconButton(
+                splashRadius: Dimens.splashRadius,
+                icon: Icon(
+                  Icons.settings_rounded,
+                  color: state.textColor,
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/settings');
+                },
+              ),
             ),
           ],
         ),

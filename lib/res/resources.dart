@@ -49,6 +49,13 @@ class Strings {
   static const String errorText = 'Did you fat-finger?';
   static const String liquidated = 'liquidation!';
 
+  static const String tradeInUSD = 'Trading in USD';
+  static const String tradeTypeTitle = 'Trading Type';
+  static const String tradeTypeInfo = 'When turned off, assumes your account holds the traded asset rather than USD'
+      '  (You will lose the calculated amount plus the change in price of the asset).';
+  static const String darkTheme = 'Dark Theme';
+  static const String coolerColors = 'Cool Colors';
+
   static const String copied = 'Copied to clipboard';
   static const String okay = 'Okay';
   static const String yes = 'Yes';

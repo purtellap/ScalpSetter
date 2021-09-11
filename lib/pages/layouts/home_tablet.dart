@@ -82,23 +82,33 @@ class _HomeTabletState extends State<HomeTablet> {
                 },
               ),
             ),
-            InfoAlert(),
-            IconButton(
-              splashRadius: Dimens.splashRadius,
-              icon: Icon(
-                state.backgroundColor == ThemeColors.backgroundColorDark ? Icons.nightlight_round : Icons.wb_sunny_rounded,
-                color: state.textColor,
-              ),
-              onPressed: () async {
-                final prefs = await SharedPreferences.getInstance();
-                bool b = prefs.getBool(Keys.THEME_PREF);
-                InheritedManager.of(context).changeTheme(b);
-                prefs.setBool(Keys.THEME_PREF, !b);
-              },
-            ),
+            InfoAlert(title: Strings.infoTitle, description: Strings.infoDesc,),
+            // IconButton(
+            //   splashRadius: Dimens.splashRadius,
+            //   icon: Icon(
+            //     state.backgroundColor == ThemeColors.backgroundColorDark ? Icons.nightlight_round : Icons.wb_sunny_rounded,
+            //     color: state.textColor,
+            //   ),
+            //   onPressed: () async {
+            //     final prefs = await SharedPreferences.getInstance();
+            //     bool b = prefs.getBool(Keys.THEME_PREF);
+            //     InheritedManager.of(context).changeTheme(b);
+            //     prefs.setBool(Keys.THEME_PREF, !b);
+            //   },
+            // ),
+            DonateButton(),
             Padding(
               padding: const EdgeInsets.fromLTRB(0,0,16,0),
-              child: DonateButton(),
+              child: IconButton(
+                splashRadius: Dimens.splashRadius,
+                icon: Icon(
+                  Icons.settings_rounded,
+                  color: state.textColor,
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/settings');
+                },
+              ),
             ),
           ],
         ),

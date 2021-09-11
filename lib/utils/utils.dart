@@ -59,6 +59,11 @@ class Utils {
 }
 
 class InfoAlert extends StatelessWidget {
+
+  final String title;
+  final String description;
+  InfoAlert({this.title, this.description});
+
   @override
   Widget build(BuildContext context) {
     final state = InheritedManager.of(context).state;
@@ -78,8 +83,8 @@ class InfoAlert extends StatelessWidget {
                     maxWidth: 600
                   ),
                   child: AlertDialog(
-                    title: Text(Strings.infoTitle, style: TextStyle(color: state.textColor)),
-                    content: Text(Strings.infoDesc,
+                    title: Text(title, style: TextStyle(color: state.textColor)),
+                    content: Text(description,
                       style: TextStyle(color: state.secondaryTextColor),
                     ),
                     backgroundColor: state.backgroundColor,
@@ -88,6 +93,7 @@ class InfoAlert extends StatelessWidget {
                     ),
                     actions: [
                       TextButton(
+                        style: ButtonStyle(overlayColor: MaterialStateColor.resolveWith((states) => state.overlayColor)),
                         child: Padding(
                           padding: const EdgeInsets.all(16),
                           child: Text(Strings.okay, style: TextStyle(color: ThemeColors.amberAccentColor),),
@@ -136,6 +142,7 @@ class DonateButton extends StatelessWidget {
                     ),
                     actions: [
                       TextButton(
+                        style: ButtonStyle(overlayColor: MaterialStateColor.resolveWith((states) => state.overlayColor)),
                         child: Padding(
                           padding: const EdgeInsets.all(16),
                           child: Text(Strings.donoNo, style: TextStyle(color: state.secondaryTextColor),),
@@ -145,6 +152,7 @@ class DonateButton extends StatelessWidget {
                         },
                       ),
                       TextButton(
+                        style: ButtonStyle(overlayColor: MaterialStateColor.resolveWith((states) => state.overlayColor)),
                         child: Padding(
                           padding: const EdgeInsets.all(16),
                           child: Text(Strings.donoYes, style: TextStyle(color: ThemeColors.amberAccentColor),),
