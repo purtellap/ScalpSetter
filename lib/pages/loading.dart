@@ -23,11 +23,12 @@ class _LoadingState extends State<Loading> {
     return true;
   }
 
-  loadColors(BuildContext context) async {
+  loadStates(BuildContext context) async {
     // too lazy to write new methods. just using change method to update colors
     final prefs = await SharedPreferences.getInstance();
     InheritedManager.of(context).changeTheme(!(prefs.getBool(Keys.THEME_PREF) ?? setPref(prefs, Keys.THEME_PREF)));
     InheritedManager.of(context).changeAccentColors(!(prefs.getBool(Keys.ACCENT_PREF) ?? setPref(prefs, Keys.ACCENT_PREF)));
+    InheritedManager.of(context).changeTradeType(!(prefs.getBool(Keys.TRADE_TYPE_PREF) ?? setPref(prefs, Keys.TRADE_TYPE_PREF)));
   }
 
   loadAccounts(BuildContext context) async {
@@ -47,9 +48,8 @@ class _LoadingState extends State<Loading> {
 
   load() async {
     // ????
-    await loadColors(context);
+    await loadStates(context);
     await loadAccounts(context);
-    await Future.delayed(Duration(seconds: 2));
     Navigator.pushReplacementNamed(context, '/home');
   }
 

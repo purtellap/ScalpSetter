@@ -21,11 +21,15 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   List bools = [true, false];
+  int accountIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     final state = InheritedManager.of(context).state;
-    Account currentAccount = state.accounts[0];
+    if(state.accounts.length - 1 < accountIndex){
+      accountIndex = state.accounts.length - 1;
+    }
+    Account currentAccount = state.accounts[accountIndex];
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -118,7 +122,9 @@ class _HomeState extends State<Home> {
                 options: CarouselOptions(enableInfiniteScroll: false, viewportFraction: .92,
                   height: 100,
                   onPageChanged: (index, reason) {
-                    setState(() {currentAccount = state.accounts[index];});
+                    setState(() {
+                      accountIndex = index;
+                    });
                   }
                 ),
                 items: state.accounts.map((i) {

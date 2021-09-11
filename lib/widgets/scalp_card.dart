@@ -132,7 +132,7 @@ class _AnswerTextState extends State<AnswerText> {
 
   int i = 0;
 
-  Map<String, String> calculateAnswer(){
+  Map<String, String> calculateAnswer(bool isUSD){
     try{
       double accountSize = double.parse(widget.accountSize);
       double entryPrice = double.parse(widget.entryPrice);
@@ -146,10 +146,22 @@ class _AnswerTextState extends State<AnswerText> {
       double takerFee = widget.account.takerFee/100;
       double makerFee = widget.account.makerFee/100;
 
-      double contracts = riskAmountFlat/(
-          (takerFee + 1/leverage) * leverage/entryPrice *
-          ((stopLoss * priceDiffPercent) + (stopLoss * takerFee) + (entryPrice * makerFee))
-      );
+      double dollars;
+      double units;
+      double contracts;
+      if(isUSD){
+        dollars = riskAmountFlat / ((priceDiffPercent * leverage) + (leverage * makerFee) + (leverage * takerFee));
+        units = dollars / entryPrice;
+        contracts = dollars * leverage;
+      }
+      else{
+        contracts = riskAmountFlat/(
+            (takerFee + 1/leverage) * leverage/entryPrice *
+                ((stopLoss * priceDiffPercent) + (stopLoss * takerFee) + (entryPrice * makerFee))
+        );
+        dollars = contracts / leverage;
+        units = dollars / entryPrice;
+      }
 
       // --- LIQUIDATION STUFF - NOT PART OF EQUATION ----
       // liquidation price formula from a random example exchange that won't be named
@@ -166,14 +178,6 @@ class _AnswerTextState extends State<AnswerText> {
       // // if(priceDiffPercent > standardLiquidationPercent){
       // //   return 'liquidation!';
       // // }
-      //
-      //double dollars = riskAmountFlat / (priceDiffPercent * leverage * (1 + makerFee + takerFee));
-      //double dollars = (riskAmountFlat + (riskAmountFlat * makerFee * leverage) + (riskAmountFlat * takerFee * leverage)) / (priceDiffPercent * leverage);
-      //double risk2 = dollars * priceDiffPercent * leverage + dollars * leverage * makerFee + dollars * leverage * takerFee;
-
-      double dollars = riskAmountFlat / ((priceDiffPercent * leverage) + (leverage * makerFee) + (leverage * takerFee));
-      double units = dollars / entryPrice;
-      //contracts = dollars * leverage
 
       Map<String, String> map = {
         'DOLLARS' : dollars.toString(),
@@ -205,14 +209,15 @@ class _AnswerTextState extends State<AnswerText> {
 
   @override
   Widget build(BuildContext context) {
-    Map answers = calculateAnswer();
+    final state = InheritedManager.of(context).state;
+
+    Map answers = calculateAnswer(state.tradeType);
     String descriptor = answers.keys.elementAt(i%answers.length);
     String unformattedAnswer = answers[descriptor];
     String formattedAnswer;
     try{formattedAnswer =  formattedAns(answers)[descriptor];}
     catch (e){formattedAnswer = unformattedAnswer;}
 
-    final state = InheritedManager.of(context).state;
     return GestureDetector(
       onTap: (){
         Clipboard.setData(ClipboardData(text: unformattedAnswer));

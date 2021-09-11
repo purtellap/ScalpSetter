@@ -1,18 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:scalpsetter/manager/manager.dart';
 import 'package:scalpsetter/res/resources.dart';
 import 'package:scalpsetter/utils/utils.dart';
-import 'package:scalpsetter/widgets/fee_input.dart';
 import 'package:scalpsetter/widgets/scalp_card.dart';
-import 'package:scalpsetter/widgets/leverage_input.dart';
-import 'package:scalpsetter/widgets/risk_input.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../account.dart';
-import '../main.dart';
 
 class Settings extends StatefulWidget {
 
@@ -21,16 +11,6 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-
-  bool tradeType = true;
-
-  save(BuildContext context, List<Account> accounts) async {
-    InheritedManager.of(context).updateAccountList(accounts);
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString(Keys.ACCOUNTS_PREF, json.encode(InheritedManager.of(context).state.accounts));
-    // final provider = ThemeInherited.of(context);
-    // provider.changeAccentColors(Colors.amber);
-  }
 
   @override
   void initState() {
@@ -57,7 +37,6 @@ class _SettingsState extends State<Settings> {
             icon: Icon(Icons.arrow_back_rounded),
             splashRadius: Dimens.splashRadius,
             onPressed: () {
-              //print('saving...');
               Navigator.pop(context, true);
             },
           ),
@@ -94,11 +73,11 @@ class _SettingsState extends State<Settings> {
                         ],
                       ),),
                       Flexible(child: Switch(
-                        activeColor: tradeType ? state.longColor : state.shortColor,
-                        value: tradeType,
+                        activeColor: state.tradeType ? state.longColor : state.shortColor,
+                        value: state.tradeType,
                         onChanged: (value){
                           setState(() {
-                            tradeType = value;
+                            Utils.changeTradeType(context);
                           });
                         },
                       )),

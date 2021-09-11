@@ -22,12 +22,16 @@ class _HomeDesktopState extends State<HomeDesktop> {
 
   List bools = [true, false];
   CarouselController buttonCarouselController = CarouselController();
-  int accIndex = 0;
+  int accountIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     final state = InheritedManager.of(context).state;
-    Account currentAccount = state.accounts[0];
+    if(state.accounts.length - 1 < accountIndex){
+      accountIndex = state.accounts.length - 1;
+    }
+    Account currentAccount = state.accounts[accountIndex];
+
     Color footerColor = state.overlayColor;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
@@ -128,7 +132,7 @@ class _HomeDesktopState extends State<HomeDesktop> {
                                   child: IconButton(
                                     splashRadius: Dimens.splashRadius,
                                     icon: Icon(Icons.arrow_back_ios_rounded),
-                                    color: accIndex > 0 ? state.textColor : state.overlayColor,
+                                    color: accountIndex > 0 ? state.textColor : state.overlayColor,
                                     onPressed: (){
                                       buttonCarouselController.previousPage(curve: Curves.easeIn);
                                     },
@@ -144,8 +148,7 @@ class _HomeDesktopState extends State<HomeDesktop> {
                                           height: 100,
                                           onPageChanged: (index, reason) {
                                             setState(() {
-                                              accIndex = index;
-                                              currentAccount = state.accounts[index];
+                                              accountIndex = index;
                                             });
                                           }
                                       ),
@@ -163,7 +166,7 @@ class _HomeDesktopState extends State<HomeDesktop> {
                                   child: IconButton(
                                     splashRadius: Dimens.splashRadius,
                                     icon: Icon(Icons.arrow_forward_ios_rounded),
-                                    color: accIndex < state.accounts.length - 1 ? state.textColor : state.overlayColor,
+                                    color: accountIndex < state.accounts.length - 1 ? state.textColor : state.overlayColor,
                                     onPressed: (){
                                       buttonCarouselController.nextPage(curve: Curves.easeIn);
                                     },

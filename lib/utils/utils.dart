@@ -21,6 +21,13 @@ class Utils {
     prefs.setBool(Keys.THEME_PREF, !b);
   }
 
+  static void changeTradeType(BuildContext context) async{
+    final prefs = await SharedPreferences.getInstance();
+    bool b = prefs.getBool(Keys.TRADE_TYPE_PREF);
+    InheritedManager.of(context).changeTradeType(b);
+    prefs.setBool(Keys.TRADE_TYPE_PREF, !b);
+  }
+
   static void linkPlayStore(BuildContext context) async{
     //await launch(Strings.googlePlayLink);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

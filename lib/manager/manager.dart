@@ -57,6 +57,11 @@ class _StateManagerState extends State<StateManager> {
     setState(() => state = newState);
   }
 
+  void changeTradeType(bool isUSD){
+    final newState = state.copy(tradeType: isUSD);
+    setState(() => state = newState);
+  }
+
   @override
   Widget build(BuildContext context) => InheritedManager(
     child: widget.child,

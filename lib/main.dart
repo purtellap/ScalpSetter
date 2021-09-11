@@ -45,7 +45,7 @@ class ScalpSetter extends StatelessWidget {
                   ),
                   //splashColor: state.overlayColor,
                 ),
-                initialRoute: '/',
+                //initialRoute: '/',
                 routes: {
                   '/': (context) => Loading(),
                   '/home': (context) => HomeAdapter(),

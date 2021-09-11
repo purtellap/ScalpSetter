@@ -16,6 +16,9 @@ class CoreState {
   final Color longColor;
   final Color shortColor;
 
+  final bool tradeType;
+
+  // Default states
   const CoreState({
     this.accounts,
     this.backgroundColor = ThemeColors.backgroundColorDark,
@@ -24,6 +27,7 @@ class CoreState {
     this.secondaryTextColor = ThemeColors.secondaryTextColorDark,
     this.longColor = ThemeColors.blueColor,
     this.shortColor = ThemeColors.purpleColor,
+    this.tradeType = false,
   });
 
   // Makes a copy of the object for use in state manager
@@ -35,6 +39,7 @@ class CoreState {
     Color secondaryTextColor,
     Color longColor,
     Color shortColor,
+    bool tradeType,
   }) => CoreState(
     accounts: accounts ?? this.accounts,
     backgroundColor: backgroundColor ?? this.backgroundColor,
@@ -43,6 +48,7 @@ class CoreState {
     secondaryTextColor: secondaryTextColor ?? this.secondaryTextColor,
     longColor: longColor ?? this.longColor,
     shortColor: shortColor ?? this.shortColor,
+    tradeType: tradeType ?? this.tradeType,
   );
 
   // All this is doing is replacing the comparison method used in the
@@ -57,7 +63,8 @@ class CoreState {
           textColor == other.textColor &&
           secondaryTextColor == other.secondaryTextColor &&
           longColor == other.longColor &&
-          shortColor == other.shortColor;
+          shortColor == other.shortColor &&
+          tradeType == other.tradeType;
 
   @override
   int get hashCode =>
@@ -67,5 +74,6 @@ class CoreState {
       textColor.hashCode ^
       secondaryTextColor.hashCode ^
       longColor.hashCode ^
-      shortColor.hashCode;
+      shortColor.hashCode ^
+      tradeType.hashCode;
 }

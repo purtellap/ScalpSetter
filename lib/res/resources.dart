@@ -5,6 +5,7 @@ class Keys {
   static const String THEME_PREF = 'themePref';
   static const String ACCENT_PREF = 'accentPref';
   static const String ACCOUNTS_PREF = 'accountsList';
+  static const String TRADE_TYPE_PREF = 'tradeType';
 }
 
 class Dimens {
