@@ -27,12 +27,7 @@ class _ScalpCardState extends State<ScalpCard> {
   @override
   Widget build(BuildContext context) {
     final state = InheritedManager.of(context).state;
-    return GestureDetector(
-        onTap: (){
-      // hide keyboard when tapping out
-          FocusManager.instance.primaryFocus?.unfocus();
-          //SystemChannels.textInput.invokeMethod('TextInput.hide');
-    }, child:Card(
+    return Card(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16)
       ),
@@ -44,7 +39,6 @@ class _ScalpCardState extends State<ScalpCard> {
           child: CalculationArea(widget.currentAccount, widget.title, widget.isLong),
         ),
       ),
-    ),
     );
   }
 }

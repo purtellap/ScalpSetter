@@ -22,6 +22,7 @@ class _HomeTabletState extends State<HomeTablet> {
 
   List bools = [true, false];
   int accountIndex = 0;
+  CarouselController accountCarouselController = CarouselController();
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +125,8 @@ class _HomeTabletState extends State<HomeTablet> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 4),
                 child: CarouselSlider(
-                  options: CarouselOptions(enableInfiniteScroll: false, viewportFraction: .98,
+                  carouselController: accountCarouselController,
+                  options: CarouselOptions(enableInfiniteScroll: false, viewportFraction: .96,
                       height: 100,
                       onPageChanged: (index, reason) {
                         setState(() {accountIndex = index;});
@@ -133,7 +135,7 @@ class _HomeTabletState extends State<HomeTablet> {
                   items: state.accounts.map((i) {
                     return Builder(
                       builder: (BuildContext context) {
-                        return HomeAccountCard(i);
+                        return HomeAccountCard(i, state.accounts.indexOf(i), accountIndex, accountCarouselController);
                       },
                     );
                   }).toList(),

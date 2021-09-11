@@ -155,7 +155,7 @@ class _HomeDesktopState extends State<HomeDesktop> {
                                       items: state.accounts.map((i) {
                                         return Builder(
                                           builder: (BuildContext context) {
-                                            return HomeAccountCard(i);
+                                            return HomeAccountCard(i, 0, 0, CarouselController());
                                           },
                                         );
                                       }).toList(),

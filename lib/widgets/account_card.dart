@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:scalpsetter/manager/manager.dart';
 
@@ -6,7 +7,10 @@ import '../account.dart';
 class HomeAccountCard extends StatelessWidget {
 
   final Account account;
-  HomeAccountCard(this.account);
+  final int accountIndex;
+  final int currentIndex;
+  final CarouselController c;
+  HomeAccountCard(this.account, this.accountIndex, this.currentIndex, this.c);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +23,12 @@ class HomeAccountCard extends StatelessWidget {
       child: InkWell(
         onTap: (){
           FocusManager.instance.primaryFocus?.unfocus();
-          Navigator.pushNamed(context, '/account', arguments: {'account' : account});
+          if(accountIndex == currentIndex){
+            Navigator.pushNamed(context, '/account', arguments: {'account' : account});
+          }
+          else {
+            c.animateToPage(accountIndex, curve: Curves.easeIn);
+          }
         },
         child: Padding(
           padding: const EdgeInsets.all(16),

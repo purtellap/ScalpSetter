@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -22,6 +24,9 @@ class _HomeState extends State<Home> {
 
   List bools = [true, false];
   int accountIndex = 0;
+
+  CarouselController accountCarouselController = CarouselController();
+  CarouselController cardCarouselController = CarouselController();
 
   @override
   Widget build(BuildContext context) {
@@ -119,6 +124,7 @@ class _HomeState extends State<Home> {
             children: [
               //Container(margin: EdgeInsets.fromLTRB(16, 16, 16, 8), child: HomeAccountCard()),
               CarouselSlider(
+                carouselController: accountCarouselController,
                 options: CarouselOptions(enableInfiniteScroll: false, viewportFraction: .92,
                   height: 100,
                   onPageChanged: (index, reason) {
@@ -130,20 +136,38 @@ class _HomeState extends State<Home> {
                 items: state.accounts.map((i) {
                   return Builder(
                     builder: (BuildContext context) {
-                      return HomeAccountCard(i);
+                      return HomeAccountCard(i, state.accounts.indexOf(i), accountIndex, accountCarouselController);
                     },
                   );
                 }).toList(),
               ),
               Expanded(
                 child: CarouselSlider(
+                  carouselController: cardCarouselController,
                   options: CarouselOptions(enableInfiniteScroll: false, viewportFraction: .92,
                       aspectRatio: MediaQuery.of(context).size.width/MediaQuery.of(context).size.height,
                     ),
                   items: [0,1].map((i) {
                     return Builder(
                       builder: (BuildContext context) {
-                        return ScalpCard(title: Strings.titles[i], isLong: bools[i], currentAccount: currentAccount,);
+                        return GestureDetector(
+                          // onHorizontalDragEnd: (details){
+                          //   if(!(Platform.isAndroid || Platform.isIOS)){
+                          //     if(details.primaryVelocity > 200 && i == 1){
+                          //       //right
+                          //       cardCarouselController.previousPage(curve: Curves.easeIn);
+                          //     }
+                          //     else if (details.primaryVelocity < -200 && i == 0){
+                          //       //left
+                          //       cardCarouselController.nextPage(curve: Curves.easeIn);
+                          //     }
+                          //   }
+                          // },
+                          onTap: (){
+                            FocusManager.instance.primaryFocus?.unfocus();
+                            cardCarouselController.animateToPage(i, curve: Curves.easeIn);
+                          },
+                          child: ScalpCard(title: Strings.titles[i], isLong: bools[i], currentAccount: currentAccount,));
                       },
                     );
                   }).toList(),
