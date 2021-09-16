@@ -27,7 +27,7 @@ class CoreState {
     this.secondaryTextColor = ThemeColors.secondaryTextColorDark,
     this.longColor = ThemeColors.blueColor,
     this.shortColor = ThemeColors.purpleColor,
-    this.tradeType = false,
+    this.tradeType = true,
   });
 
   // Makes a copy of the object for use in state manager

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scalpsetter/manager/manager.dart';
 import 'package:scalpsetter/res/resources.dart';
@@ -50,74 +51,87 @@ class _SettingsState extends State<Settings> {
         ),
         body: Padding(
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-          child: Card(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16)
-            ),
-            color: state.overlayColor,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(height: 4,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+          child: Column(
+            children: [
+              Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16)
+                ),
+                color: state.overlayColor,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Flexible(child: Row(
+                      SizedBox(height: 4,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          TitleText(text: Strings.tradeInUSD, color: state.secondaryTextColor,),
-                          InfoAlert(title: Strings.tradeTypeTitle, description: Strings.tradeTypeInfo,)
+                          Flexible(child: Row(
+                            children: [
+                              TitleText(text: Strings.tradeInUSD, color: state.secondaryTextColor,),
+                              InfoAlert(title: Strings.tradeTypeTitle, description: Strings.tradeTypeInfo,)
+                            ],
+                          ),),
+                          Flexible(child: Switch(
+                            activeColor: state.tradeType ? state.longColor : state.shortColor,
+                            value: state.tradeType,
+                            onChanged: (value){
+                              setState(() {
+                                Utils.changeTradeType(context);
+                              });
+                            },
+                          )),
                         ],
-                      ),),
-                      Flexible(child: Switch(
-                        activeColor: state.tradeType ? state.longColor : state.shortColor,
-                        value: state.tradeType,
-                        onChanged: (value){
-                          setState(() {
-                            Utils.changeTradeType(context);
-                          });
-                        },
-                      )),
+                      ),
+                      SizedBox(height: 24,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Flexible(child: TitleText(text: Strings.darkTheme, color: state.secondaryTextColor,),),
+                          Flexible(child: Switch(
+                            activeColor: isDarkTheme ? state.longColor : state.shortColor,
+                            value: isDarkTheme,
+                            onChanged: (value){
+                              Utils.changeTheme(context);
+                            },
+                          )),
+                        ],
+                      ),
+                      SizedBox(height: 24,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Flexible(child: TitleText(text: Strings.coolerColors, color: state.secondaryTextColor,),),
+                          Flexible(child: Switch(
+                            activeColor: !isDefaultAccent ? state.longColor : state.shortColor,
+                            value: !isDefaultAccent,
+                            onChanged: (value){
+                              setState(() {
+                                Utils.changeAccentColor(context);
+                              });
+                            },
+                          )),
+                        ],
+                      ),
                     ],
                   ),
-                  SizedBox(height: 24,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Flexible(child: TitleText(text: Strings.darkTheme, color: state.secondaryTextColor,),),
-                      Flexible(child: Switch(
-                        activeColor: isDarkTheme ? state.longColor : state.shortColor,
-                        value: isDarkTheme,
-                        onChanged: (value){
-                          Utils.changeTheme(context);
-                        },
-                      )),
-                    ],
-                  ),
-                  SizedBox(height: 24,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Flexible(child: TitleText(text: Strings.coolerColors, color: state.secondaryTextColor,),),
-                      Flexible(child: Switch(
-                        activeColor: !isDefaultAccent ? state.longColor : state.shortColor,
-                        value: !isDefaultAccent,
-                        onChanged: (value){
-                          setState(() {
-                            Utils.changeAccentColor(context);
-                          });
-                        },
-                      )),
-                    ],
-                  ),
-                ],
+                ),
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SelectableText(Strings.madeBy, style: TextStyle(
+                  color: state.secondaryTextColor,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 2,
+                ),),
+              )
+            ],
           ),
         ),
       ),

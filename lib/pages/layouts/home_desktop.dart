@@ -59,26 +59,26 @@ class _HomeDesktopState extends State<HomeDesktop> {
                   },
                 ),
                 actions: [
-                  Visibility(
-                    visible: kIsWeb,
-                    child: IconButton(
-                      splashRadius: Dimens.splashRadius,
-                      icon: ImageIcon(AssetImage('assets/google64p.png'), color: ThemeColors.linkColor),
-                      onPressed: () {
-                        Utils.linkPlayStore(context);
-                      },
-                    ),
-                  ),
-                  Visibility(
-                    visible: kIsWeb,
-                    child: IconButton(
-                      splashRadius: Dimens.splashRadius,
-                      icon: ImageIcon(AssetImage('assets/appstore64.png'), color: ThemeColors.linkColor),
-                      onPressed: () {
-                        Utils.linkAppStore(context);
-                      },
-                    ),
-                  ),
+                  // Visibility(
+                  //   visible: kIsWeb,
+                  //   child: IconButton(
+                  //     splashRadius: Dimens.splashRadius,
+                  //     icon: ImageIcon(AssetImage('assets/google64p.png'), color: ThemeColors.linkColor),
+                  //     onPressed: () {
+                  //       Utils.linkPlayStore(context);
+                  //     },
+                  //   ),
+                  // ),
+                  // Visibility(
+                  //   visible: kIsWeb,
+                  //   child: IconButton(
+                  //     splashRadius: Dimens.splashRadius,
+                  //     icon: ImageIcon(AssetImage('assets/appstore64.png'), color: ThemeColors.linkColor),
+                  //     onPressed: () {
+                  //       Utils.linkAppStore(context);
+                  //     },
+                  //   ),
+                  // ),
                   InfoAlert(title: Strings.infoTitle, description: Strings.infoDesc,),
                   // IconButton(
                   //   splashRadius: Dimens.splashRadius,

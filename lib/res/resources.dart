@@ -45,6 +45,7 @@ class Strings {
   static const String webLink = 'https://www.scalpsetter.com';
   static const String googlePlayLink = 'https://play.google.com/store/apps/details?id=com.austinpurtell.wf';
   static const String appStoreLink = '';
+  static const String madeBy = 'Contact Developer: purtellap@gmail.com';
 
   static const List titles = ['LONG', 'SHORT'];
   static const String errorText = 'Did you fat-finger?';

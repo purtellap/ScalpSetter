@@ -17,18 +17,18 @@ class _LoadingState extends State<Loading> {
 
   SharedPref sharedPref = SharedPref();
 
-  bool setPref(SharedPreferences prefs, String key){
-    prefs.setBool(key, true);
+  bool setPref(SharedPreferences prefs, String key, bool b){
+    prefs.setBool(key, b);
     //print('inserting preferences for: ' + key);
-    return true;
+    return b;
   }
 
   loadStates(BuildContext context) async {
     // too lazy to write new methods. just using change method to update colors
     final prefs = await SharedPreferences.getInstance();
-    InheritedManager.of(context).changeTheme(!(prefs.getBool(Keys.THEME_PREF) ?? setPref(prefs, Keys.THEME_PREF)));
-    InheritedManager.of(context).changeAccentColors(!(prefs.getBool(Keys.ACCENT_PREF) ?? setPref(prefs, Keys.ACCENT_PREF)));
-    InheritedManager.of(context).changeTradeType(!(prefs.getBool(Keys.TRADE_TYPE_PREF) ?? setPref(prefs, Keys.TRADE_TYPE_PREF)));
+    InheritedManager.of(context).changeTheme(!(prefs.getBool(Keys.THEME_PREF) ?? setPref(prefs, Keys.THEME_PREF, true)));
+    InheritedManager.of(context).changeAccentColors(!(prefs.getBool(Keys.ACCENT_PREF) ?? setPref(prefs, Keys.ACCENT_PREF, false)));
+    InheritedManager.of(context).changeTradeType(!(prefs.getBool(Keys.TRADE_TYPE_PREF) ?? setPref(prefs, Keys.TRADE_TYPE_PREF, false)));
   }
 
   loadAccounts(BuildContext context) async {
